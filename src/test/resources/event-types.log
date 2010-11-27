@@ -1,0 +1,1078 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <id>tag:github.com,2008:/timeline</id>
+  <link type="text/html" rel="alternate" href="https://github.com/timeline."/>
+  <link type="application/atom+xml" rel="self" href="https://github.com/timeline."/>
+  <title>GitHub Public Timeline Feed</title>
+  <updated>2010-11-19T03:55:54-08:00</updated>
+  <entry>
+    <id>tag:github.com,2008:PushEvent/1007541708</id>
+    <published>2010-11-19T03:55:54-08:00</published>
+    <updated>2010-11-19T03:55:54-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/esil/cmake/compare/a1a4a2cb6d...63d21c1f8e"/>
+    <title>esil pushed to master at esil/cmake</title>
+    <author>
+      <name>esil</name>
+      <uri>https://github.com/esil</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/581827aca5bbfea5819154fcf19c8f92?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+
+
+
+
+
+&lt;div class="details"&gt;
+  
+
+  
+    &lt;div class="commits"&gt;
+    &lt;ul&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/bradking" class="committer"&gt;bradking&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/b634c4336800049ac711e7c27e7993b89f0fa74b"&gt;b634c43&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;Merge topic 'fix-failed-submit-test'&lt;br&gt;
+&lt;br&gt;
+391acdf Add another expected output for the failed submit tests.&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/bradking" class="committer"&gt;bradking&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/36f82f06b7617dde87f29a0e1a2ac732190f1087"&gt;36f82f0&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;Merge topic 'CPackRPM-RelocatablePackage'&lt;br&gt;
+&lt;br&gt;
+604c369 CPackRPM:: [partially] support relocatable package&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/bradking" class="committer"&gt;bradking&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/edbaf90a028b3f0b1ed4fa5116c8d4995d3a60d5"&gt;edbaf90&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;Merge topic 'FindPostgreSQL'&lt;br&gt;
+&lt;br&gt;
+56da481 Changed ADDITIONAL_SEARCH_PATHS to PostgreSQL_ADDITIONAL_SEARCH_PATHS.&lt;br&gt;
+106de67 Forgot the copyright notice.&lt;br&gt;
+5ecfe16 Adding a FindPostgreSQL.cmake module&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/bradking" class="committer"&gt;bradking&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/8212d90cb52f6806ac80b8cfb73d3e68c749166c"&gt;8212d90&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;Merge topic 'findqt4-cross-compile'&lt;br&gt;
+&lt;br&gt;
+7fd3739 Find correct Qt plugins for cross-compiling.&lt;br&gt;
+ff888dd Fix some issues with refinding when qmake executable is changed.&lt;br&gt;
+22e725f Tweak for cygwin, don't convert : to ;&lt;br&gt;
+b55da4c Add cross-compiling support to FindQt4.cmake&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/bradking" class="committer"&gt;bradking&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/a3c2c459b93c44cbc315f11293025ee9013918b5"&gt;a3c2c45&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;Merge topic 'disable_gcc33_onfree_bsd'&lt;br&gt;
+&lt;br&gt;
+3ef273c Poison GCC 3.3 on OpenBSD a bit later&lt;br&gt;
+696a0af Disable gcc 33 on OpenBSD because it crashes CPack by default.&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/bradking" class="committer"&gt;bradking&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/e562a938ca2d3efa39eabdeaa918e410328e4259"&gt;e562a93&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;Merge topic 'bootstrap-toolchains'&lt;br&gt;
+&lt;br&gt;
+2ad2c2d bootstrap: Detect known C/C++ compiler toolchains&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/bradking" class="committer"&gt;bradking&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/6a24bdfc4e040af52e4aef95d5c934ecc836a8b8"&gt;6a24bdf&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;Optionally use system bzip2 library (#10932)&lt;br&gt;
+&lt;br&gt;
+Add option CMAKE_USE_SYSTEM_BZIP2 and enable it automatically when&lt;br&gt;
+CMAKE_USE_SYSTEM_LIBRARIES is on.  While we're at it, remove XMLRPC from&lt;br&gt;
+the list of system library options because we no longer provide it in&lt;br&gt;
+source.&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/bradking" class="committer"&gt;bradking&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/7739d786a42a2bbbab87df0c4f869ef8aecae767"&gt;7739d78&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;Merge CPackRPM changes into doc-spelling&lt;br&gt;
+&lt;br&gt;
+Conflicts:&lt;br&gt;
+	Modules/CPackRPM.cmake&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;strong&gt;&lt;span class='committer'&gt;Kai Wasserbäch&lt;/span&gt;&lt;/strong&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/9203e9187ec3c0ada49af953c3ec1a1f9190cf45"&gt;9203e91&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;Fix spelling errors reported by Lintian.&lt;br&gt;
+&lt;br&gt;
+During a Lintian run on the binary packages of CMake in Debian I was&lt;br&gt;
+notified of many spelling mistakes.&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/billhoffman" class="committer"&gt;billhoffman&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/8507a73ea6e394b6ad42b7a2df562ee7b4bd4950"&gt;8507a73&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;Fix for bug#10483, INCLUDE_EXTERNAL_MSPROJECT: ProjectGUID now ProjectGuid&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/Kitware" class="committer"&gt;Kitware&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/6327429f55949702f0d0c8e2888a9ae01910382b"&gt;6327429&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;KWSys Nightly Date Stamp&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/dlrdave" class="committer"&gt;dlrdave&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/391acdf19915b8dd48b0bbd593af8be27178ea35"&gt;391acdf&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;Add another expected output for the failed submit tests.&lt;br&gt;
+&lt;br&gt;
+The CTestTestFailedSubmit-http test was failing on the&lt;br&gt;
+hut11 Experimental dashboards with &amp;quot;Empty reply from&lt;br&gt;
+server&amp;quot; due to a localhost settings change.&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/dlrdave" class="committer"&gt;dlrdave&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/46df0b44ac97859ab40dd0aa03ceca297a455587"&gt;46df0b4&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;Activate retry code on any curl submit failure.&lt;br&gt;
+&lt;br&gt;
+Previously, we were only going into the retry block&lt;br&gt;
+for time out conditions. But a &amp;quot;could not connect&amp;quot;&lt;br&gt;
+response, or really any sort of curl failure, is&lt;br&gt;
+also a condition where we should retry the submit&lt;br&gt;
+if the user has requested a retry.&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/Kitware" class="committer"&gt;Kitware&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/942060cb19adb0b8ab3971a90cab83058f23935e"&gt;942060c&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;KWSys Nightly Date Stamp&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/Kitware" class="committer"&gt;Kitware&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/7dd6f1d13a047ddda0300a3a544f7c700accafc4"&gt;7dd6f1d&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;KWSys Nightly Date Stamp&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/dlrdave" class="committer"&gt;dlrdave&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/b2634b6aa3a0203e3a97060cf9e3206245a85080"&gt;b2634b6&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;Detect CMake warnings and errors in build output.&lt;br&gt;
+&lt;br&gt;
+Fix niggly in ExternalProject that would inadvertently&lt;br&gt;
+create a log file of output when a command was explicitly&lt;br&gt;
+set to the empty string.&lt;br&gt;
+&lt;br&gt;
+Also, increase the default value for showing context&lt;br&gt;
+around build errors to 10 lines, up from 6. Also add&lt;br&gt;
+the ability to customize this setting so that users&lt;br&gt;
+can put it back to 6 or even lower if they want, or&lt;br&gt;
+show more if they want.&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/Kitware" class="committer"&gt;Kitware&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/92473b32ce183dccdb2c0932ea9f7067c1a464bb"&gt;92473b3&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;KWSys Nightly Date Stamp&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/TheErk" class="committer"&gt;TheErk&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/604c3698c1ba517b83b4e6142bf95f9562fed921"&gt;604c369&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;CPackRPM:: [partially] support relocatable package&lt;br&gt;
+&lt;br&gt;
+The support is partial because it cannot be used if&lt;br&gt;
+   CPACK_SET_DESTDIR is set&lt;br&gt;
+   some file are installed using absolute path&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;a href="https://github.com/bradking" class="committer"&gt;bradking&lt;/a&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/70154efef86c7025435b15c52a8a1a5b47067835"&gt;70154ef&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;KWSys: Avoid undefined behavior in Process crash tests&lt;br&gt;
+&lt;br&gt;
+Clang is smart enough to recognize that &amp;quot;*(int*)0=0&amp;quot; invokes undefined&lt;br&gt;
+behavior, warns, and produces an &amp;quot;undefined instruction&amp;quot;.  The message&lt;br&gt;
+in commit &amp;quot;Avoid Clang optimizer bug in testProcess-[45]&amp;quot; (2010-07-02)&lt;br&gt;
+is incorrect; this is not a Clang bug.  It really is undefined&lt;br&gt;
+behavior.  Use &amp;quot;*(int*)1=0&amp;quot; to produce a crash instead.&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+      
+      &lt;li&gt;
+        
+          &lt;strong&gt;&lt;span class='committer'&gt;Andrew Maclean&lt;/span&gt;&lt;/strong&gt;
+        
+        committed
+        &lt;code&gt;&lt;a href="/esil/cmake/commit/56da481eff9ee48942ee1717d2b00ec1a6a9b3db"&gt;56da481&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;Changed ADDITIONAL_SEARCH_PATHS to PostgreSQL_ADDITIONAL_SEARCH_PATHS.&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    
+
+    
+      &lt;li class='more'&gt;
+      &lt;a href="/esil/cmake/compare/a1a4a2cb6d...63d21c1f8e"&gt;547 more commits &amp;raquo;&lt;/a&gt;
+      &lt;/li&gt;
+    
+    &lt;/ul&gt;
+    &lt;/div&gt;
+  
+&lt;/div&gt;
+
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:PushEvent/1007541480</id>
+    <published>2010-11-19T03:55:07-08:00</published>
+    <updated>2010-11-19T03:55:07-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/gfunkmonk/android_packages_apps_Camera/compare/be4ab8a904...7170f50eec"/>
+    <title>gfunkmonk pushed to froyo at gfunkmonk/android_packages_apps_Camera</title>
+    <author>
+      <name>gfunkmonk</name>
+      <uri>https://github.com/gfunkmonk</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/40b1ecc91d5df6cc86a9d209c1fa2f14?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+
+
+
+
+
+&lt;div class="details"&gt;
+
+
+
+    &lt;div class="commits"&gt;
+    &lt;ul&gt;
+
+
+      &lt;li&gt;
+
+          &lt;strong&gt;&lt;span class='committer'&gt;Matt Rinsch&lt;/span&gt;&lt;/strong&gt;
+
+        committed
+        &lt;code&gt;&lt;a href="/gfunkmonk/android_packages_apps_Camera/commit/7170f50eecb5bb4aa696c577051d88c13d65f51a"&gt;7170f50&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;a&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+
+
+      &lt;li&gt;
+
+          &lt;strong&gt;&lt;span class='committer'&gt;Matt Rinsch&lt;/span&gt;&lt;/strong&gt;
+
+        committed
+        &lt;code&gt;&lt;a href="/gfunkmonk/android_packages_apps_Camera/commit/5208005a02f9e33ee900efdff1341e67c5084fb6"&gt;5208005&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;12&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+
+
+
+    &lt;/ul&gt;
+    &lt;/div&gt;
+
+&lt;/div&gt;
+
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:PushEvent/1007555670</id>
+    <published>2010-11-19T04:03:09-08:00</published>
+    <updated>2010-11-19T04:03:09-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/moma/tinasoft.desktop/compare/2147ea08f8...9160d31435"/>
+    <title>elishowk pushed to master at moma/tinasoft.desktop</title>
+    <author>
+      <name>elishowk</name>
+      <uri>https://github.com/elishowk</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/d0d29ceea59e425cde0b14cfe7eedc89?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+
+
+
+
+
+&lt;div class="details"&gt;
+
+
+
+    &lt;div class="commits"&gt;
+    &lt;ul&gt;
+
+
+      &lt;li&gt;
+
+          &lt;a href="https://github.com/elishowk" class="committer"&gt;elishowk&lt;/a&gt;
+
+        committed
+        &lt;code&gt;&lt;a href="/moma/tinasoft.desktop/commit/9160d3143598bf21def92fa4abfedc40afef673c"&gt;9160d31&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;upgrade to pytm alpha8&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+
+
+      &lt;li&gt;
+
+          &lt;a href="https://github.com/elishowk" class="committer"&gt;elishowk&lt;/a&gt;
+
+        committed
+        &lt;code&gt;&lt;a href="/moma/tinasoft.desktop/commit/354ffcf1ea79ff3c35fefa85be5789308bcc5a5f"&gt;354ffcf&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;user files labeling display restored&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+
+
+      &lt;li&gt;
+
+          &lt;a href="https://github.com/elishowk" class="committer"&gt;elishowk&lt;/a&gt;
+
+        committed
+        &lt;code&gt;&lt;a href="/moma/tinasoft.desktop/commit/e612dee1451d46bd2bfef570f92dfac0117542a2"&gt;e612dee&lt;/a&gt;&lt;/code&gt;
+
+        &lt;div class="message"&gt;
+          &lt;blockquote&gt;fixed bug in pytextminer server request&lt;/blockquote&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+
+
+
+    &lt;/ul&gt;
+    &lt;/div&gt;
+
+&lt;/div&gt;
+
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:CreateEvent/1007541704</id>
+    <published>2010-11-19T03:55:53-08:00</published>
+    <updated>2010-11-19T03:55:53-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/74hc595/remona/compare/master"/>
+    <title>74hc595 created branch master at 74hc595/remona</title>
+    <author>
+      <name>74hc595</name>
+      <uri>https://github.com/74hc595</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/97cbc2c5d28a8d4d3222583414d8d49b?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+
+
+
+
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+
+      New branch is at
+      &lt;a href="https://github.com/74hc595/remona/tree/master"&gt;74hc595/remona/tree/master&lt;/a&gt;
+
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:CreateEvent/1007541619</id>
+    <published>2010-11-19T03:55:29-08:00</published>
+    <updated>2010-11-19T03:55:29-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/channgo/SmallGift"/>
+    <title>channgo created repository SmallGift</title>
+    <author>
+      <name>channgo</name>
+      <uri>https://github.com/channgo</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/5201db2e4380831d4f3cfac682fed1f8?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+
+
+
+
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+
+      SmallGift app
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:CreateEvent/1007541560</id>
+    <published>2010-11-19T03:55:18-08:00</published>
+    <updated>2010-11-19T03:55:18-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/marcomaggi/Infix/tree/1.0.3"/>
+    <title>marcomaggi created tag 1.0.3 at marcomaggi/Infix</title>
+    <author>
+      <name>marcomaggi</name>
+      <uri>https://github.com/marcomaggi</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/1b6222300e55a67efb2fe7dbf6e5821f?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+
+
+
+
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+
+      New tag is at
+      &lt;a href="https://github.com/marcomaggi/Infix/tree/1.0.3"&gt;marcomaggi/Infix/tree/1.0.3&lt;/a&gt;
+
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:CreateEvent/1007541721</id>
+    <published>2010-11-19T03:55:59-08:00</published>
+    <updated>2010-11-19T03:55:59-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/kravitz/ttb-game/compare/oop"/>
+    <title>refaim created branch oop at kravitz/ttb-game</title>
+    <author>
+      <name>refaim</name>
+      <uri>https://github.com/refaim</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/7e236e30fd692e7f1047af23280a87f9?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+
+
+
+
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+
+      New branch is at
+      &lt;a href="https://github.com/kravitz/ttb-game/tree/oop"&gt;kravitz/ttb-game/tree/oop&lt;/a&gt;
+
+        &lt;br/&gt;
+        &lt;a href="https://github.com/kravitz/ttb-game/compare/oop" class="compare-link"&gt;Compare oop branch with master &amp;raquo;&lt;/a&gt;
+
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:WatchEvent/1007541678</id>
+    <published>2010-11-19T03:55:45-08:00</published>
+    <updated>2010-11-19T03:55:45-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/icefox/arora"/>
+    <title>marco-arnold started watching icefox/arora</title>
+    <author>
+      <name>marco-arnold</name>
+      <uri>https://github.com/marco-arnold</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/0457e70f33d5515739164613a463d379?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+
+      arora's description:
+      &lt;blockquote&gt;
+        Cross platform web browser
+      &lt;/blockquote&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssuesEvent/1007541709</id>
+    <published>2010-11-19T03:55:54-08:00</published>
+    <updated>2010-11-19T03:55:54-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/weisserd/LDAP-Sync/issues/1/find"/>
+    <title>weisserd closed issue 1 on weisserd/LDAP-Sync</title>
+    <author>
+      <name>weisserd</name>
+      <uri>https://github.com/weisserd</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/3424cc0a0fcb24af4ac4e29b5647f4bb?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+    &lt;blockquote&gt;
+      Null pointer exception after LDAP Authentication
+    &lt;/blockquote&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssuesEvent/1007544980</id>
+    <published>2010-11-19T03:56:52-08:00</published>
+    <updated>2010-11-19T03:56:52-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/technomancy/swank-clojure/issues/32/find"/>
+    <title>grinnbearit opened issue 32 on technomancy/swank-clojure</title>
+    <author>
+      <name>grinnbearit</name>
+      <uri>https://github.com/grinnbearit</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/9f07870310e74733d399a66e4beea43b?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+    &lt;blockquote&gt;
+      enlive html-resource throw slime eof error
+    &lt;/blockquote&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:FollowEvent/1007545371</id>
+    <published>2010-11-19T03:58:03-08:00</published>
+    <updated>2010-11-19T03:58:03-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/tkyk"/>
+    <title>vitorpc started following tkyk</title>
+    <author>
+      <name>vitorpc</name>
+      <uri>https://github.com/vitorpc</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/aa37024396feb6d1aceae93f4c373e40?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+  &lt;div class="details"&gt;
+
+
+
+    &lt;div class="message"&gt;
+      tkyk has
+      13
+      public repos
+      and 22
+     followers.
+    &lt;/div&gt;
+  &lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:ForkEvent/1007541648</id>
+    <published>2010-11-19T03:55:35-08:00</published>
+    <updated>2010-11-19T03:55:35-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/KeithMoss/chrome-tab-sugar/"/>
+    <title>KeithMoss forked arnaud/chrome-tab-sugar</title>
+    <author>
+      <name>KeithMoss</name>
+      <uri>https://github.com/KeithMoss</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/ddd4420ac5d2bade97b30a30a324540a?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+
+
+      Forked repository is at &lt;a href="https://github.com/KeithMoss/chrome-tab-sugar"&gt;KeithMoss/chrome-tab-sugar&lt;/a&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:GistEvent/1007546130</id>
+    <published>2010-11-19T03:58:11-08:00</published>
+    <updated>2010-11-19T03:58:11-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://gist.github.com/706394"/>
+    <title>zakuro563 updated gist: 706394</title>
+    <author>
+      <name>zakuro563</name>
+      <uri>https://github.com/zakuro563</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/4b09cf2fd3992894a6ec0f2e5b95dd34?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+    /*
+ Json Library for D ( by @zakuro563 )
+  &amp;lt;NYSL License&amp;gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:GistEvent/1007555941</id>
+    <published>2010-11-19T04:03:51-08:00</published>
+    <updated>2010-11-19T04:03:51-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://gist.github.com/706433"/>
+    <title>malditogeek created gist: 706433</title>
+    <author>
+      <name>malditogeek</name>
+      <uri>https://github.com/malditogeek</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/4605adbcd13e20c14e82fcf528b516e6?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+    require 'nokogiri'
+require 'open-uri'
+require 'pp'
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:GistEvent/1007577244</id>
+    <published>2010-11-19T04:33:47-08:00</published>
+    <updated>2010-11-19T04:33:47-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://gist.github.com/706463"/>
+    <title>tkyk forked gist: 706463</title>
+    <author>
+      <name>tkyk</name>
+      <uri>https://github.com/tkyk</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/9dd3bdf08651751ef308cfa7dda8b112?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+    &amp;lt;?php
+/**
+ * PHP versions 4 and 5
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:MemberEvent/1007541666</id>
+    <published>2010-11-19T03:55:43-08:00</published>
+    <updated>2010-11-19T03:55:43-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/fernandopereira/valter_rails"/>
+    <title>fernandopereira added Haderson to valter_rails</title>
+    <author>
+      <name>fernandopereira</name>
+      <uri>https://github.com/fernandopereira</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/771cf1ca04a96afecd5324545def9a03?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+    valter_rails is at &lt;a href="https://github.com/fernandopereira/valter_rails"&gt;fernandopereira/valter_rails&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:PullRequestEvent/1007546128</id>
+    <published>2010-11-19T03:58:11-08:00</published>
+    <updated>2010-11-19T03:58:11-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/defunkt/mustache/pull/64"/>
+    <title>defunkt closed pull request 64 on defunkt/mustache</title>
+    <author>
+      <name>defunkt</name>
+      <uri>https://github.com/defunkt</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/b8dbb1987e8e5318584865f880036796?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+
+
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+    &lt;blockquote&gt;
+      Require layout bug
+    &lt;/blockquote&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:PullRequestEvent/1007547014</id>
+    <published>2010-11-19T03:59:02-08:00</published>
+    <updated>2010-11-19T03:59:02-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/jquery/jquery/pull/102"/>
+    <title>jitter opened pull request 102 on jquery/jquery</title>
+    <author>
+      <name>jitter</name>
+      <uri>https://github.com/jitter</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/2ca079caf9a1e280af4537b8072c15b1?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+
+
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+    &lt;blockquote&gt;
+      Improve performance of get() for negative indices. Fixes #5476.
+    &lt;/blockquote&gt;
+
+    1 commit
+    with
+    6 additions
+    and
+    6 deletions
+
+
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:PullRequestEvent/1007553635</id>
+    <published>2010-11-19T04:00:26-08:00</published>
+    <updated>2010-11-19T04:00:26-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/specht/proteomatic/pull/2"/>
+    <title>specht merged pull request 2 on specht/proteomatic</title>
+    <author>
+      <name>specht</name>
+      <uri>https://github.com/specht</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/47f27088421953f60cc27b67dc9ad97b?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+
+
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+    &lt;blockquote&gt;
+      Develop: Open recent menu
+    &lt;/blockquote&gt;
+
+    1 commit
+    with
+    77 additions
+    and
+    2 deletions
+
+
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:DownloadEvent/1007541464</id>
+    <published>2010-11-19T03:55:04-08:00</published>
+    <updated>2010-11-19T03:55:04-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/Duny"/>
+    <title>Duny uploaded a file to Duny/foo_my_autoplaylist</title>
+    <author>
+      <name>Duny</name>
+      <uri>https://github.com/Duny</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/4a84c03a979087ae78d57eb7c7bcbc80?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+    &amp;quot;foo_my_autoplaylist.dll&amp;quot; is at &lt;a href="https://github.com/Duny/foo_my_autoplaylist/downloads#download_63223"&gt;Duny/foo_my_autoplaylist/downloads&lt;/a&gt;
+      &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:GollumEvent/1007541615</id>
+    <published>2010-11-19T03:55:27-08:00</published>
+    <updated>2010-11-19T03:55:27-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/Opstandingskerk/NWonline/wiki/Setting-up-the-development-environment"/>
+    <title>jeroenbaas edited a page in the Opstandingskerk/NWonline wiki</title>
+    <author>
+      <name>jeroenbaas</name>
+      <uri>https://github.com/jeroenbaas</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/8a959665ff09c7b5f3b60d17be625d14?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+      &amp;quot;Setting up the development environment&amp;quot; is at
+    &lt;a href="https://github.com/Opstandingskerk/NWonline/wiki/Setting-up-the-development-environment"&gt;Opstandingskerk/NWonline/wiki/Setting-up-the-development-environment&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:GollumEvent/1007555427</id>
+    <published>2010-11-19T04:02:27-08:00</published>
+    <updated>2010-11-19T04:02:27-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/rakd/test/wiki/Home"/>
+    <title>rakd created a page in the rakd/test wiki</title>
+    <author>
+      <name>rakd</name>
+      <uri>https://github.com/rakd</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/f1a874fff8600bbb3c3f2e9a5bff207d?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+      &amp;quot;Home&amp;quot; is at
+    &lt;a href="https://github.com/rakd/test/wiki/Home"&gt;rakd/test/wiki/Home&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:DeleteEvent/1007541502</id>
+    <published>2010-11-19T03:55:09-08:00</published>
+    <updated>2010-11-19T03:55:09-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/clbustos"/>
+    <title>clbustos deleted branch stack_layout at rubyvis</title>
+    <author>
+      <name>clbustos</name>
+      <uri>https://github.com/clbustos</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/01a60a1c75e2260f04eb9ae7d332f8a3?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+    Deleted branch was at
+    &lt;span style="color:#808080"&gt;clbustos/rubyvis/tree/stack_layout&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:DeleteEvent/1007566134</id>
+    <published>2010-11-19T04:21:19-08:00</published>
+    <updated>2010-11-19T04:21:19-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/thanethomson"/>
+    <title>thanethomson deleted tag 0.1.praekelt at django-form-designer</title>
+    <author>
+      <name>thanethomson</name>
+      <uri>https://github.com/thanethomson</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/618338ef44ab2694449f8e2735ea6cd9?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+    Deleted tag was at
+    &lt;span style="color:#808080"&gt;thanethomson/django-form-designer/tree/0.1.praekelt&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:PublicEvent/1007541632</id>
+    <published>2010-11-19T03:55:33-08:00</published>
+    <updated>2010-11-19T03:55:33-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/saevarom"/>
+    <title>saevarom open sourced playware</title>
+    <author>
+      <name>saevarom</name>
+      <uri>https://github.com/saevarom</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/78233c36387fb4a0cc80a29cc1080008?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+
+    [[trans id=&amp;quot;en;events.no_desc&amp;quot; options=&amp;quot;raise;;true&amp;quot;]]No description yet.[[/trans]]
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:CommitCommentEvent/1007547055</id>
+    <published>2010-11-19T03:59:22-08:00</published>
+    <updated>2010-11-19T03:59:22-08:00</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/mangos/mangos/commit/a3b1a7cd23734ea431210258806e88addd590886#-P0"/>
+    <title>VladimirMangos commented on mangos/mangos</title>
+    <author>
+      <name>VladimirMangos</name>
+      <uri>https://github.com/VladimirMangos</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://secure.gravatar.com/avatar/3c8c523fa7a5b26ee1de946d6f7883a7?s=30&amp;d=https%3A%2F%2Fgithub.com%2Fimages%2Fgravatars%2Fgravatar-140.png"/>
+    <content type="html">
+
+
+
+&lt;div class="details"&gt;
+
+  &lt;div class="message"&gt;
+
+
+
+        Comment  in &lt;a href="/mangos/mangos/commit/a3b1a7cd23734ea431210258806e88addd590886#comments"&gt;a3b1a7c&lt;/a&gt;:
+        &lt;blockquote title="You right i not remember about UNIT_FIELD_CRITTER (in fact first time read about), BUT I not &amp;quot;put hack&amp;quot;. I update _existed_ field to ObjectGuid.
+Start use UNIT_FIELD_CRITTER field if it related to minipet can be good step but independent from this or later commits. Remember, step by step ;) Tested patch for use this field will welcome."&gt;&lt;p&gt;You right i not remember about UNIT_FIELD_CRITTER (in fact first time read about), BUT I not "put hack". I update &lt;em&gt;existed&lt;/em&gt; field to ObjectGuid.&lt;br&gt;
+Start use UNIT_FIELD_CRITTER field if it related to minipet can be good step but independent from this or later commits. Remember, step by step ;) Tested patch for use this field will welcome.&lt;/p&gt;&lt;/blockquote&gt;
+
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+</feed>
