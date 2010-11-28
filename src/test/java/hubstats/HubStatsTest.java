@@ -18,7 +18,7 @@ import java.util.List;
 
 import static org.apache.hadoop.mrunit.testutil.ExtendedAssert.assertListEquals;
 
-public class PushEventsTest {
+public class HubStatsTest {
 
     private static final List<Pair<LongWritable, Text>> EMPTY =
             Collections.unmodifiableList(new ArrayList<Pair<LongWritable, Text>>());
@@ -29,7 +29,7 @@ public class PushEventsTest {
 
     @Before
     public void setUp() {
-        Mapper<LongWritable, Text, Text, LongWritable> mapper = new PushEvents.PushEventMapper();
+        Mapper<LongWritable, Text, Text, LongWritable> mapper = new HubStats.PushEventMapper();
         driver = new MapDriver<LongWritable, Text, Text, LongWritable>(mapper);
     }
 

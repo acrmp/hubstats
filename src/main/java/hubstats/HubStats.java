@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  *
  * @see <a href="http://oobaloo.co.uk/articles/2010/1/20/processing-xml-in-hadoop.html">Processing XML in Hadoop</a>
  */
-public class PushEvents extends Configured implements Tool {
+public class HubStats extends Configured implements Tool {
 
     public static class PushEventMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
 
@@ -45,7 +45,7 @@ public class PushEvents extends Configured implements Tool {
          * @param value The XML feed text
          * @param context The job context
          * @throws IOException If there is an exception reading or writing data
-         * @throws InterruptedException If this job is interrupted 
+         * @throws InterruptedException If this job is interrupted
          */
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             if (value.toString().trim().length() == 0) {
@@ -88,7 +88,7 @@ public class PushEvents extends Configured implements Tool {
     @Override
     public int run(String[] args) throws Exception {
         Job job = new Job();
-        job.setJarByClass(PushEvents.class);
+        job.setJarByClass(HubStats.class);
         job.setJobName("pushevents");
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(LongWritable.class);
@@ -109,7 +109,7 @@ public class PushEvents extends Configured implements Tool {
     }
 
     public static void main(String[] args) throws Exception {
-        ToolRunner.run(new PushEvents(), args);
+        ToolRunner.run(new HubStats(), args);
     }
 
 }
