@@ -44,8 +44,12 @@ public class HubStats extends Configured implements Tool {
         private static final Pattern FORK_PATTERN = Pattern.compile("^([^ ]+) forked ([^/]+)/(.*)$");
         private static final Pattern PUBLIC_PATTERN = Pattern.compile("^([^ ]+).* ([^ ]+)$");
         private static final Pattern GOLLUM_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) a page in the ([^/]+)/(.*)$");
-        private static final Pattern DELETE_PATTERN = Pattern.compile("^([^ ]+) deleted branch ([^ ]+) at (.*)$");
+        private static final Pattern DELETE_PATTERN = Pattern.compile("^([^ ]+) deleted (branch|tag) ([^ ]+) at (.*)$");
         private static final Pattern DOWNLOAD_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) a file to ([^/]+)/(.*)$");
+        private static final Pattern FOLLOW_PATTERN = Pattern.compile("^([^ ]+) started following (.*)$");
+        private static final Pattern GIST_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) gist: ([0-9]+)$");
+        private static final Pattern PULLREQ_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) pull request ([0-9]+) on ([^/]+)/(.*)$");
+        private static final Pattern COMMENT_PATTERN = Pattern.compile("^([^ ]+) commented on ([^/]+)/(.*)$");
 
         /**
          * Parse the feed xml and extract the push event id and repository name
@@ -179,8 +183,13 @@ public class HubStats extends Configured implements Tool {
                                     if (m.matches()) {
                                         builder.actor(m.group(1));
                                         builder.repoAccount(m.group(1));
-                                        builder.branch(m.group(2));
-                                        builder.repoName(m.group(3));
+                                        if (m.group(2).equals("tag")) {
+                                            builder.tag(m.group(3));    
+                                        }
+                                        else {
+                                            builder.branch(m.group(3));
+                                        }
+                                        builder.repoName(m.group(4));
                                     }
                                     break;
                                 case Download:
@@ -190,6 +199,39 @@ public class HubStats extends Configured implements Tool {
                                         builder.subType(m.group(2));
                                         builder.repoAccount(m.group(3));
                                         builder.repoName(m.group(4));
+                                    }
+                                    break;
+                                case Follow:
+                                    m = FOLLOW_PATTERN.matcher(sr.getElementText());
+                                    if (m.matches()) {
+                                        builder.actor(m.group(1));
+                                        builder.repoAccount(m.group(2));
+                                    }
+                                    break;
+                                case Gist:
+                                    m = GIST_PATTERN.matcher(sr.getElementText());
+                                    if (m.matches()) {
+                                        builder.actor(m.group(1));
+                                        builder.subType(m.group(2));
+                                        builder.alternateId(Long.parseLong(m.group(3)));
+                                    }
+                                    break;
+                                case PullRequest:
+                                    m = PULLREQ_PATTERN.matcher(sr.getElementText());
+                                    if (m.matches()) {
+                                        builder.actor(m.group(1));
+                                        builder.subType(m.group(2));
+                                        builder.alternateId(Long.parseLong(m.group(3)));
+                                        builder.repoAccount(m.group(4));
+                                        builder.repoName(m.group(5));
+                                    }
+                                    break;
+                                case CommitComment:
+                                    m = COMMENT_PATTERN.matcher(sr.getElementText());
+                                    if (m.matches()) {
+                                        builder.actor(m.group(1));
+                                        builder.repoAccount(m.group(2));
+                                        builder.repoName(m.group(3));
                                     }
                                     break;
                                 default:
