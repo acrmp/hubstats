@@ -87,21 +87,24 @@ public class Event {
             this.actor = builder.actor.trim();
         }
 
-        if (builder.eventType == EventType.Push || builder.eventType == EventType.Create ||
-                builder.eventType == EventType.Watch || builder.eventType == EventType.Issues ||
-                builder.eventType == EventType.Follow || builder.eventType == EventType.Fork ||
-                builder.eventType == EventType.Member || builder.eventType == EventType.PullRequest ||
-                builder.eventType == EventType.Gollum || builder.eventType == EventType.Delete ||
-                builder.eventType == EventType.Public || builder.eventType == EventType.CommitComment) {
+        if (builder.eventType == EventType.Gist) {
+            if (builder.repoAccount != null) {
+                throw new IllegalArgumentException("Gist event must not have an associated repository account");
+            }
+        }
+        else {
             if (builder.repoAccount == null || builder.repoAccount.trim().equals("")) {
                 throw new IllegalArgumentException(String.format("%s event must have an associated repository account", builder.eventType));
             }
         }
-        if (builder.eventType == EventType.Push || builder.eventType == EventType.Watch ||
-                builder.eventType == EventType.Issues || builder.eventType == EventType.Fork ||
-                builder.eventType == EventType.Member || builder.eventType == EventType.PullRequest ||
-                builder.eventType == EventType.Gollum || builder.eventType == EventType.Delete ||
-                builder.eventType == EventType.Public || builder.eventType == EventType.CommitComment) {
+
+        if (builder.eventType == EventType.Gist || builder.eventType == EventType.Follow) {
+            if (builder.repoName != null) {
+                throw new IllegalArgumentException(String.format("%s event must not have an associated repository name",
+                        builder.eventType));
+            }
+        }
+        else {
             if (builder.repoName == null || builder.repoName.trim().equals("")) {
                 throw new IllegalArgumentException(String.format("%s event must have an associated repository name", builder.eventType));
             }

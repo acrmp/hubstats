@@ -245,6 +245,18 @@ public class EventTest {
     }
 
     @Test
+    public void createMustHaveRepoName() {
+        try {
+            new Event.Builder(1007541721L, EventType.valueOf("Create"), "2010-11-19T03:55:59-08:00", "refaim")
+                .repoAccount("marcomaggi").branch("oop").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Create event must have an associated repository name", e.getMessage());
+        }
+    }
+
+    @Test
     public void createBranch() {
         Event e = new Event.Builder(1007541721L, EventType.valueOf("Create"), "2010-11-19T03:55:59-08:00", "refaim")
             .repoAccount("kravitz").repoName("ttb-game").branch("oop").build();
@@ -375,6 +387,18 @@ public class EventTest {
     }
 
     @Test
+    public void followMustNotHaveRepoName() {
+        try {
+            new Event.Builder(1007545371L, EventType.valueOf("Follow"), "2010-11-19T03:58:03-08:00", "vitorpc")
+                .repoAccount("tkyk").repoName("bar").build();        
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Follow event must not have an associated repository name", e.getMessage());
+        }
+    }
+
+    @Test
     public void forkRepo() {
         Event e = new Event.Builder(1007541648L, EventType.valueOf("Fork"), "2010-11-19T03:55:35-08:00", "KeithMoss")
                 .repoAccount("arnaud").repoName("chrome-tab-sugar").build();
@@ -449,6 +473,31 @@ public class EventTest {
             assertEquals("Gist event must specify the type of the operation", e.getMessage());
         }
     }
+
+    @Test
+    public void gistMustNotSpecifyRepoAccount() {
+        try {
+            new Event.Builder(1007577244L, EventType.valueOf("Gist"), "2010-11-19T04:33:47-08:00", "tkyk")
+                .repoAccount("foo").alternateId(706463L).subType("forked").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Gist event must not have an associated repository account", e.getMessage());
+        }
+    }
+
+    @Test
+    public void gistMustNotSpecifyRepoName() {
+        try {
+            new Event.Builder(1007577244L, EventType.valueOf("Gist"), "2010-11-19T04:33:47-08:00", "tkyk")
+                .repoName("bar").alternateId(706463L).subType("forked").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Gist event must not have an associated repository name", e.getMessage());
+        }
+    }
+
 
     @Test
     public void addMember() {
@@ -555,6 +604,30 @@ public class EventTest {
         Event e = new Event.Builder(1007541464L, EventType.valueOf("Download"), "2010-11-19T03:55:04-08:00", "Duny")
                 .repoAccount("Duny").repoName("foo_my_autoplaylist").subType("uploaded").build();
         assertEquals("1007541464\tDownload\t2010-11-19T03:55:04-08:00\tDuny\tDuny\tfoo_my_autoplaylist\t\t\t\tuploaded", e.toString());
+    }
+
+    @Test
+    public void downloadMustHaveRepoAccount() {
+        try {
+            new Event.Builder(1007541464L, EventType.valueOf("Download"), "2010-11-19T03:55:04-08:00", "Duny")
+                    .repoName("foo_my_autoplaylist").subType("uploaded").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Download event must have an associated repository account", e.getMessage());    
+        }
+    }
+
+    @Test
+    public void downloadMustHaveRepoName() {
+        try {
+            new Event.Builder(1007541464L, EventType.valueOf("Download"), "2010-11-19T03:55:04-08:00", "Duny")
+                    .repoAccount("Duny").subType("uploaded").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Download event must have an associated repository name", e.getMessage());    
+        }
     }
 
     @Test
