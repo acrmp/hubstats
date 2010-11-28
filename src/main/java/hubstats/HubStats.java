@@ -9,7 +9,6 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
-import org.apache.hadoop.mapreduce.lib.reduce.LongSumReducer;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.mahout.classifier.bayes.XmlInputFormat; // From mahout-examples
@@ -24,7 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Push events per repository from the GitHub public timeline.
+ * Process events from the GitHub public timeline.
  * <p/>
  * Using Mahout over Hadoop's built-in stream xml support as people seem to have had problems with it:
  *
@@ -32,12 +31,21 @@ import java.util.regex.Pattern;
  */
 public class HubStats extends Configured implements Tool {
 
-    public static class PushEventMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
+    public static class PushEventMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
 
         private static final XMLInputFactory factory = XMLInputFactory.newFactory();
-        private static final Pattern ID_PATTERN = Pattern.compile("^.*PushEvent/([0-9]+)$");
-        private static final Pattern REPO_PATTERN = Pattern.compile("^.*at ([^/]+/.*)$");
-        private static final LongWritable ONE = new LongWritable(1L);
+        private static final Pattern ID_PATTERN = Pattern.compile("^.*:([A-Za-z]+)Event/([0-9]+)$");
+        private static final Pattern ISSUES_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) issue ([0-9]+) on ([^/]+)/(.*)$");
+        private static final Pattern PUSH_PATTERN = Pattern.compile("^([^ ]+) pushed to ([^ ]+) at ([^/]+)/(.*)$");
+        private static final Pattern CREATE_BRANCH_PATTERN = Pattern.compile("^([^ ]+) created (branch|tag) ([^ ]+) at ([^/]+)/(.*)$");
+        private static final Pattern CREATE_REPO_PATTERN = Pattern.compile("^([^ ]+) created repository (.*)$");
+        private static final Pattern WATCH_PATTERN = Pattern.compile("^([^ ]+) started watching ([^/]+)/(.*)$");
+        private static final Pattern MEMBER_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) ([^ ]+) to (.*)$");
+        private static final Pattern FORK_PATTERN = Pattern.compile("^([^ ]+) forked ([^/]+)/(.*)$");
+        private static final Pattern PUBLIC_PATTERN = Pattern.compile("^([^ ]+).* ([^ ]+)$");
+        private static final Pattern GOLLUM_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) a page in the ([^/]+)/(.*)$");
+        private static final Pattern DELETE_PATTERN = Pattern.compile("^([^ ]+) deleted branch ([^ ]+) at (.*)$");
+        private static final Pattern DOWNLOAD_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) a file to ([^/]+)/(.*)$");
 
         /**
          * Parse the feed xml and extract the push event id and repository name
@@ -57,25 +65,141 @@ public class HubStats extends Configured implements Tool {
 
                 Matcher m;
                 LongWritable id = new LongWritable();
-                Text repoName = new Text();
-                boolean doMatch = false;
+                Text eventText = new Text();
 
+                Event.Builder builder = null;
                 for (int event = sr.next(); event != XMLStreamConstants.END_DOCUMENT; event = sr.next()) {
                     if (event == XMLStreamConstants.START_ELEMENT) {
-                        if (sr.getLocalName().equals("id")) {
+                        if (sr.getLocalName().equals("entry")) {
+                            builder = new Event.Builder();   
+                        }
+                        else if (builder == null) {
+                            continue;
+                        }
+                        else if (sr.getLocalName().equals("id")) {
                             m = ID_PATTERN.matcher(sr.getElementText());
                             if (m.matches()) {
-                                id.set(Long.parseLong(m.group(1)));
-                                doMatch = true;
+                                builder.type(EventType.valueOf(m.group(1)));
+                                long eventId = Long.parseLong(m.group(2));
+                                id.set(eventId);
+                                builder.eventId(eventId);
                             }
-                        } else if (doMatch && sr.getLocalName().equals("title")) {
-                            m = REPO_PATTERN.matcher(sr.getElementText());
-                            if (m.matches()) {
-                                repoName.set(m.group(1));
-                                context.write(repoName, ONE);
-                            }
-                            doMatch = false;
                         }
+                        else if (sr.getLocalName().equals("published")) {
+                            builder.at(sr.getElementText());
+                        }
+                        else if (sr.getLocalName().equals("title")) {
+                            switch (builder.getType()) {
+                                case Issues:
+                                    m = ISSUES_PATTERN.matcher(sr.getElementText());
+                                    if (m.matches()) {
+                                        builder.actor(m.group(1));
+                                        builder.subType(m.group(2));
+                                        builder.alternateId(Long.parseLong(m.group(3)));
+                                        builder.repoAccount(m.group(4));
+                                        builder.repoName(m.group(5));
+                                    }
+                                    break;
+                                case Push:
+                                    m = PUSH_PATTERN.matcher(sr.getElementText());
+                                    if (m.matches()) {
+                                        builder.actor(m.group(1));
+                                        builder.branch(m.group(2));
+                                        builder.repoAccount(m.group(3));
+                                        builder.repoName(m.group(4));
+                                    }                                   
+                                    break;
+                                case Create:
+                                    String text = sr.getElementText();
+                                    m = CREATE_BRANCH_PATTERN.matcher(text);
+                                    if (m.matches()) {
+                                        builder.actor(m.group(1));
+                                        if (m.group(2).equals("tag")) {
+                                            builder.tag(m.group(3));
+                                        }
+                                        else {
+                                            builder.branch(m.group(3));
+                                        }
+                                        builder.repoAccount(m.group(4));
+                                        builder.repoName(m.group(5));
+                                    }
+                                    else {
+                                        m = CREATE_REPO_PATTERN.matcher(text);
+                                        if (m.matches()) {
+                                            builder.actor(m.group(1));
+                                            builder.repoAccount(m.group(1));
+                                            builder.repoName(m.group(2));
+                                        }
+                                    }
+                                    break;
+                                case Watch:
+                                    m = WATCH_PATTERN.matcher(sr.getElementText());
+                                    if (m.matches()) {
+                                        builder.actor(m.group(1));
+                                        builder.repoAccount(m.group(2));
+                                        builder.repoName(m.group(3));
+                                    }
+                                    break;
+                                case Member:
+                                    m = MEMBER_PATTERN.matcher(sr.getElementText());
+                                    if (m.matches()) {
+                                        builder.repoAccount(m.group(1));
+                                        builder.subType(m.group(2));
+                                        builder.actor(m.group(3));
+                                        builder.repoName(m.group(4));
+                                    }
+                                    break;
+                                case Fork:
+                                    m = FORK_PATTERN.matcher(sr.getElementText());
+                                    if (m.matches()) {
+                                        builder.actor(m.group(1));
+                                        builder.repoAccount(m.group(2));
+                                        builder.repoName(m.group(3));
+                                    }
+                                    break;
+                                case Public:
+                                    m = PUBLIC_PATTERN.matcher(sr.getElementText());
+                                    if (m.matches()) {
+                                        builder.actor(m.group(1));
+                                        builder.repoAccount(m.group(1));
+                                        builder.repoName(m.group(2));
+                                    }
+                                    break;
+                                case Gollum:
+                                    m = GOLLUM_PATTERN.matcher(sr.getElementText());
+                                    if (m.matches()) {
+                                        builder.actor(m.group(1));
+                                        builder.subType(m.group(2));
+                                        builder.repoAccount(m.group(3));
+                                        builder.repoName(m.group(4));
+                                    }
+                                    break;
+                                case Delete:
+                                    m = DELETE_PATTERN.matcher(sr.getElementText());
+                                    if (m.matches()) {
+                                        builder.actor(m.group(1));
+                                        builder.repoAccount(m.group(1));
+                                        builder.branch(m.group(2));
+                                        builder.repoName(m.group(3));
+                                    }
+                                    break;
+                                case Download:
+                                    m = DOWNLOAD_PATTERN.matcher(sr.getElementText());
+                                    if (m.matches()) {
+                                        builder.actor(m.group(1));
+                                        builder.subType(m.group(2));
+                                        builder.repoAccount(m.group(3));
+                                        builder.repoName(m.group(4));
+                                    }
+                                    break;
+                                default:
+                                    throw new IllegalStateException("Event type not recognised: " + builder.getType());
+                            }
+                        }
+                    }
+                    else if (event == XMLStreamConstants.END_ELEMENT && sr.getLocalName().equals("entry")) {
+                        eventText.set(builder.build().toString());
+                        context.write(id, eventText);
                     }
                 }
             }
@@ -89,11 +213,10 @@ public class HubStats extends Configured implements Tool {
     public int run(String[] args) throws Exception {
         Job job = new Job();
         job.setJarByClass(HubStats.class);
-        job.setJobName("pushevents");
-        job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(LongWritable.class);
+        job.setJobName("hubstats");
+        job.setOutputKeyClass(LongWritable.class);
+        job.setOutputValueClass(Text.class);
         job.setMapperClass(PushEventMapper.class);
-        job.setReducerClass(LongSumReducer.class);
 
         job.setInputFormatClass(XmlInputFormat.class);
         job.setOutputFormatClass(TextOutputFormat.class);

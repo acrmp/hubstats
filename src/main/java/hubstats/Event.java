@@ -23,13 +23,10 @@ public class Event {
      * Builder to ease the creation of new instances of Event.
      */
     public static class Builder {
-        // Required parameters
-        private final long eventId;
-        private final EventType eventType;
-        private final String at;
-        private final String actor;
-
-        // Optional parameters
+        private long eventId;
+        private EventType eventType;
+        private String at;
+        private String actor;
         private String repoAccount;
         private String repoName;
         private String branch;
@@ -37,11 +34,39 @@ public class Event {
         private long alternateId;
         private String subtype;
 
+        Builder() {
+            
+        }
+
         public Builder(long eventId, EventType eventType, String at, String actor) {
             this.eventId = eventId;
             this.eventType = eventType;
             this.at = at;
             this.actor = actor;
+        }
+
+        Builder eventId(long eventId) {
+            this.eventId = eventId;
+            return this;
+        }
+
+        Builder type(EventType type) {
+            this.eventType = type;
+            return this;
+        }
+
+        EventType getType() {
+            return this.eventType;
+        }
+
+        Builder at(String at) {
+            this.at = at;
+            return this;
+        }
+
+        Builder actor(String actor) {
+            this.actor = actor;
+            return this;
         }
 
         public Builder repoAccount(String account) {
