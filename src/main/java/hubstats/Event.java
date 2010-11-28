@@ -88,12 +88,20 @@ public class Event {
         }
 
         if (builder.eventType == EventType.Push || builder.eventType == EventType.Create ||
-                builder.eventType == EventType.Watch || builder.eventType == EventType.Issues) {
+                builder.eventType == EventType.Watch || builder.eventType == EventType.Issues ||
+                builder.eventType == EventType.Follow || builder.eventType == EventType.Fork ||
+                builder.eventType == EventType.Member || builder.eventType == EventType.PullRequest ||
+                builder.eventType == EventType.Gollum || builder.eventType == EventType.Delete ||
+                builder.eventType == EventType.Public || builder.eventType == EventType.CommitComment) {
             if (builder.repoAccount == null || builder.repoAccount.trim().equals("")) {
                 throw new IllegalArgumentException(String.format("%s event must have an associated repository account", builder.eventType));
             }
         }
-        if (builder.eventType == EventType.Push || builder.eventType == EventType.Watch || builder.eventType == EventType.Issues) {
+        if (builder.eventType == EventType.Push || builder.eventType == EventType.Watch ||
+                builder.eventType == EventType.Issues || builder.eventType == EventType.Fork ||
+                builder.eventType == EventType.Member || builder.eventType == EventType.PullRequest ||
+                builder.eventType == EventType.Gollum || builder.eventType == EventType.Delete ||
+                builder.eventType == EventType.Public || builder.eventType == EventType.CommitComment) {
             if (builder.repoName == null || builder.repoName.trim().equals("")) {
                 throw new IllegalArgumentException(String.format("%s event must have an associated repository name", builder.eventType));
             }
@@ -104,17 +112,21 @@ public class Event {
                 throw new IllegalArgumentException("Push event must have an associated branch");
             }
         }
-        else if (builder.eventType == EventType.Create) {
+        else if (builder.eventType == EventType.Create || builder.eventType == EventType.Delete) {
             if (builder.branch != null && builder.tag != null) {
-                throw new IllegalArgumentException("Can't create a branch and a tag in the same event");    
+                throw new IllegalArgumentException(String.format("Can't %s a branch and a tag in the same event",
+                        builder.eventType.toString().toLowerCase()));    
             }
         }
-        else if (builder.eventType == EventType.Issues) {
-            if (builder.alternateId == 0L) {
-                throw new IllegalArgumentException("Issues event must specify the id of the issue");
+        else if (builder.eventType == EventType.Issues || builder.eventType == EventType.Gist ||
+                builder.eventType == EventType.PullRequest || builder.eventType == EventType.Download ||
+                builder.eventType == EventType.Gollum) {
+            if (builder.alternateId == 0L && builder.eventType != EventType.Download &&
+                    builder.eventType != EventType.Gollum) {
+                throwMustSpecify(builder.eventType, "id");
             }
             else if (builder.subtype == null) {
-                throw new IllegalArgumentException("Issues event must specify the type of the issue");
+                throwMustSpecify(builder.eventType, "type");
             }
         }
 
@@ -133,6 +145,14 @@ public class Event {
         this.tag = builder.tag;
         this.alternateId = builder.alternateId;
         this.subType = builder.subtype;
+    }
+
+    private void throwMustSpecify(EventType type, String field) {
+        String str = "operation";
+        if (field.equals("id")) {
+            str = type.toString().toLowerCase().replaceFirst("s$", "");
+        }
+        throw new IllegalArgumentException(String.format("%s event must specify the %s of the %s", type, field, str));
     }
 
     String getActor() {

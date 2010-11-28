@@ -352,7 +352,7 @@ public class EventTest {
             fail();
         }
         catch (IllegalArgumentException e) {
-            assertEquals("Issues event must specify the type of the issue", e.getMessage());
+            assertEquals("Issues event must specify the type of the operation", e.getMessage());
         }
     }
 
@@ -364,10 +364,45 @@ public class EventTest {
     }
 
     @Test
+    public void followMustHaveRepoAccount() {
+        try {
+            new Event.Builder(1007545371L, EventType.valueOf("Follow"), "2010-11-19T03:58:03-08:00", "vitorpc").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Follow event must have an associated repository account", e.getMessage());    
+        }
+    }
+
+    @Test
     public void forkRepo() {
         Event e = new Event.Builder(1007541648L, EventType.valueOf("Fork"), "2010-11-19T03:55:35-08:00", "KeithMoss")
                 .repoAccount("arnaud").repoName("chrome-tab-sugar").build();
         assertEquals("1007541648\tFork\t2010-11-19T03:55:35-08:00\tKeithMoss\tarnaud\tchrome-tab-sugar\t\t\t\t", e.toString());
+    }
+
+    @Test
+    public void forkMustHaveRepoAccount() {
+        try {
+            new Event.Builder(1007541648L, EventType.valueOf("Fork"), "2010-11-19T03:55:35-08:00", "KeithMoss")
+                    .repoName("chrome-tab-sugar").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Fork event must have an associated repository account", e.getMessage());
+        }
+    }
+
+    @Test
+    public void forkMustHaveRepoName() {
+        try {
+            new Event.Builder(1007541648L, EventType.valueOf("Fork"), "2010-11-19T03:55:35-08:00", "KeithMoss")
+                    .repoAccount("arnaud").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Fork event must have an associated repository name", e.getMessage());    
+        }
     }
 
     @Test
@@ -392,10 +427,58 @@ public class EventTest {
     }
 
     @Test
+    public void gistMustSpecifyId() {
+        try {
+            new Event.Builder(1007577244L, EventType.valueOf("Gist"), "2010-11-19T04:33:47-08:00", "tkyk")
+                    .subType("forked").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Gist event must specify the id of the gist", e.getMessage());
+        }
+    }
+
+    @Test
+    public void gistMustSpecifyType() {
+        try {
+            new Event.Builder(1007577244L, EventType.valueOf("Gist"), "2010-11-19T04:33:47-08:00", "tkyk")
+                    .alternateId(706463L).build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Gist event must specify the type of the operation", e.getMessage());
+        }
+    }
+
+    @Test
     public void addMember() {
         Event e = new Event.Builder(1007541666L, EventType.valueOf("Member"), "2010-11-19T03:55:43-08:00", "Haderson")
                 .repoAccount("fernandopereira").repoName("valter_rails").subType("added").build();
         assertEquals("1007541666\tMember\t2010-11-19T03:55:43-08:00\tHaderson\tfernandopereira\tvalter_rails\t\t\t\tadded", e.toString());
+    }
+
+    @Test
+    public void memberMustHaveRepoAccount() {
+        try {
+            new Event.Builder(1007541666L, EventType.valueOf("Member"), "2010-11-19T03:55:43-08:00", "Haderson")
+                    .repoName("valter_rails").subType("added").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Member event must have an associated repository account", e.getMessage());
+        }
+    }
+
+    @Test
+    public void memberMustHaveRepoName() {
+        try {
+            new Event.Builder(1007541666L, EventType.valueOf("Member"), "2010-11-19T03:55:43-08:00", "Haderson")
+                    .repoAccount("fernandopereira").subType("added").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Member event must have an associated repository name", e.getMessage());    
+        }
     }
 
     @Test
@@ -420,10 +503,70 @@ public class EventTest {
     }
 
     @Test
+    public void pullRequestMustHaveRepoAccount() {
+        try {
+            new Event.Builder(1007553635L, EventType.valueOf("PullRequest"), "2010-11-19T04:00:26-08:00", "specht")
+                    .repoName("proteomatic").alternateId(2L).subType("merged").build();
+            fail();
+        }
+        catch (Exception e) {
+            assertEquals("PullRequest event must have an associated repository account", e.getMessage());    
+        }
+    }
+
+    @Test
+    public void pullRequestMustHaveRepoName() {
+        try {
+            new Event.Builder(1007553635L, EventType.valueOf("PullRequest"), "2010-11-19T04:00:26-08:00", "specht")
+                    .repoAccount("specht").alternateId(2L).subType("merged").build();
+            fail();
+        }
+        catch (Exception e) {
+            assertEquals("PullRequest event must have an associated repository name", e.getMessage());
+        }
+    }
+
+    @Test
+    public void pullRequestMustSpecifyId() {
+        try {
+            new Event.Builder(1007553635L, EventType.valueOf("PullRequest"), "2010-11-19T04:00:26-08:00", "specht")
+                    .repoAccount("specht").repoName("proteomatic").subType("merged").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("PullRequest event must specify the id of the pullrequest", e.getMessage());
+        }
+    }
+
+    @Test
+    public void pullRequestMustSpecifyType() {
+        try {
+            new Event.Builder(1007553635L, EventType.valueOf("PullRequest"), "2010-11-19T04:00:26-08:00", "specht")
+                    .repoAccount("specht").repoName("proteomatic").alternateId(2L).build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("PullRequest event must specify the type of the operation", e.getMessage());
+        }
+    }
+
+    @Test
     public void download() {
         Event e = new Event.Builder(1007541464L, EventType.valueOf("Download"), "2010-11-19T03:55:04-08:00", "Duny")
                 .repoAccount("Duny").repoName("foo_my_autoplaylist").subType("uploaded").build();
         assertEquals("1007541464\tDownload\t2010-11-19T03:55:04-08:00\tDuny\tDuny\tfoo_my_autoplaylist\t\t\t\tuploaded", e.toString());
+    }
+
+    @Test
+    public void downloadMustSpecifyType() {
+        try {
+            new Event.Builder(1007541464L, EventType.valueOf("Download"), "2010-11-19T03:55:04-08:00", "Duny")
+                .repoAccount("Duny").repoName("foo_my_autoplaylist").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Download event must specify the type of the operation", e.getMessage());
+        }
     }
 
     @Test
@@ -441,10 +584,70 @@ public class EventTest {
     }
 
     @Test
+    public void wikiEventMustSpecifyRepoAccount() {
+        try {
+            new Event.Builder(1007555427L, EventType.valueOf("Gollum"), "2010-11-19T04:02:27-08:00", "rakd")
+                .repoName("test wiki").subType("created").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Gollum event must have an associated repository account", e.getMessage());
+        }
+    }
+
+    @Test
+    public void wikiEventMustSpecifyRepoName() {
+        try {
+            new Event.Builder(1007555427L, EventType.valueOf("Gollum"), "2010-11-19T04:02:27-08:00", "rakd")
+                .repoAccount("rakd").subType("created").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Gollum event must have an associated repository name", e.getMessage());
+        }
+    }
+
+    @Test
+    public void wikiEventMustSpecifyType() {
+        try {
+            new Event.Builder(1007555427L, EventType.valueOf("Gollum"), "2010-11-19T04:02:27-08:00", "rakd")
+                    .repoAccount("rakd").repoName("test wiki").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Gollum event must specify the type of the operation", e.getMessage());
+        }
+    }
+
+    @Test
     public void deleteBranch() {
         Event e = new Event.Builder(1007541502L, EventType.valueOf("Delete"), "2010-11-19T03:55:09-08:00", "clbustos")
                 .repoAccount("clbustos").repoName("rubyvis").branch("stack_layout").build();
         assertEquals("1007541502\tDelete\t2010-11-19T03:55:09-08:00\tclbustos\tclbustos\trubyvis\tstack_layout\t\t\t", e.toString());
+    }
+
+    @Test
+    public void deleteMustSpecifyRepoAccount() {
+        try {
+            new Event.Builder(1007541502L, EventType.valueOf("Delete"), "2010-11-19T03:55:09-08:00", "clbustos")
+                    .repoName("rubyvis").branch("stack_layout").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Delete event must have an associated repository account", e.getMessage());        
+        }
+    }
+
+    @Test
+    public void deleteMustSpecifyRepoName() {
+        try {
+            new Event.Builder(1007541502L, EventType.valueOf("Delete"), "2010-11-19T03:55:09-08:00", "clbustos")
+                    .repoAccount("clbustos").branch("stack_layout").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Delete event must have an associated repository name", e.getMessage());        
+        }
     }
 
     @Test
@@ -455,6 +658,18 @@ public class EventTest {
     }
 
     @Test
+    public void deleteCantSpecifyBranchAndTag() {
+        try {
+            new Event.Builder(1007541502L, EventType.valueOf("Delete"), "2010-11-19T03:55:09-08:00", "clbustos")
+                    .repoAccount("clbustos").repoName("rubyvis").branch("stack_layout").tag("0.1.praekelt").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Can't delete a branch and a tag in the same event", e.getMessage());
+        }
+    }
+
+    @Test
     public void publishRepo() {
         Event e = new Event.Builder(1007541632L, EventType.valueOf("Public"), "2010-11-19T03:55:33-08:00", "saevarom")
                 .repoAccount("saevarom").repoName("playware").build();
@@ -462,10 +677,58 @@ public class EventTest {
     }
 
     @Test
+    public void publishMustSpecifyRepoAccount() {
+        try {
+            new Event.Builder(1007541632L, EventType.valueOf("Public"), "2010-11-19T03:55:33-08:00", "saevarom")
+                    .repoName("playware").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Public event must have an associated repository account", e.getMessage());
+        }
+    }
+
+    @Test
+    public void publishMustSpecifyRepoName() {
+        try {
+            new Event.Builder(1007541632L, EventType.valueOf("Public"), "2010-11-19T03:55:33-08:00", "saevarom")
+                    .repoAccount("saevarom").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Public event must have an associated repository name", e.getMessage());
+        }
+    }
+
+    @Test
     public void commentOnCommit() {
         Event e = new Event.Builder(1007547055L, EventType.valueOf("CommitComment"), "2010-11-19T03:59:22-08:00", "VladimirMangos")
                 .repoAccount("mangos").repoName("mangos").build();
         assertEquals("1007547055\tCommitComment\t2010-11-19T03:59:22-08:00\tVladimirMangos\tmangos\tmangos\t\t\t\t", e.toString());
+    }
+
+    @Test
+    public void commentMustSpecifyRepoAccount() {
+        try {
+            new Event.Builder(1007547055L, EventType.valueOf("CommitComment"), "2010-11-19T03:59:22-08:00", "VladimirMangos")
+                    .repoName("mangos").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("CommitComment event must have an associated repository account", e.getMessage());
+        }
+    }
+
+    @Test
+    public void commentMustSpecifyRepoName() {
+        try {
+            new Event.Builder(1007547055L, EventType.valueOf("CommitComment"), "2010-11-19T03:59:22-08:00", "VladimirMangos")
+                    .repoAccount("mangos").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("CommitComment event must have an associated repository name", e.getMessage());
+        }
     }
 
 }
