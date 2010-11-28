@@ -1,5 +1,9 @@
 package hubstats;
 
+/**
+ * A GitHub event. Use Event.Builder to construct a new instance.
+ * @see Event.Builder
+ */
 public class Event {
 
     private static final char SEP = '\t';
@@ -15,6 +19,9 @@ public class Event {
     private final long alternateId;
     private final String subType;
 
+    /**
+     * Builder to ease the creation of new instances of Event.
+     */
     public static class Builder {
         // Required parameters
         private final long eventId;
@@ -67,6 +74,11 @@ public class Event {
             return this;
         }
 
+        /**
+         * Build a new Event based on the values provided to this builder. Validation occurs at this point that the
+         * event values provided are valid.
+         * @return A new Event
+         */
         public Event build() {
             return new Event(this);
         }
@@ -87,9 +99,10 @@ public class Event {
             this.actor = builder.actor.trim();
         }
 
-        if (builder.eventType == EventType.Gist) {
+        if (! builder.eventType.needsAccount()) {
             if (builder.repoAccount != null) {
-                throw new IllegalArgumentException("Gist event must not have an associated repository account");
+                throw new IllegalArgumentException(
+                        String.format("%s event must not have an associated repository account", builder.eventType));
             }
         }
         else {
@@ -98,7 +111,7 @@ public class Event {
             }
         }
 
-        if (builder.eventType == EventType.Gist || builder.eventType == EventType.Follow) {
+        if (! builder.eventType.needsRepoName()) {
             if (builder.repoName != null) {
                 throw new IllegalArgumentException(String.format("%s event must not have an associated repository name",
                         builder.eventType));
@@ -121,16 +134,12 @@ public class Event {
                         builder.eventType.toString().toLowerCase()));    
             }
         }
-        else if (builder.eventType == EventType.Issues || builder.eventType == EventType.Gist ||
-                builder.eventType == EventType.PullRequest || builder.eventType == EventType.Download ||
-                builder.eventType == EventType.Gollum) {
-            if (builder.alternateId == 0L && builder.eventType != EventType.Download &&
-                    builder.eventType != EventType.Gollum) {
+
+        if (builder.alternateId == 0L && builder.eventType.requiresId()) {
                 throwMustSpecify(builder.eventType, "id");
-            }
-            else if (builder.subtype == null) {
-                throwMustSpecify(builder.eventType, "type");
-            }
+        }
+        else if (builder.subtype == null && builder.eventType.requiresType()) {
+            throwMustSpecify(builder.eventType, "type");
         }
 
         this.eventId = builder.eventId;
