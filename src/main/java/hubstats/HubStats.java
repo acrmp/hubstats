@@ -1,5 +1,7 @@
 package hubstats;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
@@ -21,6 +23,8 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,26 +37,52 @@ import java.util.regex.Pattern;
  */
 public class HubStats extends Configured implements Tool {
 
-    public static class EventMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
+    private static final List<EventExtractor> extractors = Lists.newArrayList(
+            new IssueExtractor(),
+            new PushExtractor(),
+            new CreateExtractor(),
+            new WatchExtractor(),
+            new MemberExtractor(),
+            new ForkExtractor(),
+            new ForkApplyExtractor(),
+            new PublicExtractor(),
+            new GollumExtractor(),
+            new DeleteExtractor(),
+            new DownloadExtractor(),
+            new FollowExtractor(),
+            new GistExtractor(),
+            new PullRequestExtractor(),
+            new CommitCommentExtractor()
+    );
 
-        private static final XMLInputFactory factory = XMLInputFactory.newFactory();
-        private static final Pattern ID_PATTERN = Pattern.compile("^.*:([A-Za-z]+)Event/([0-9]+)$");
-        private static final Pattern ISSUES_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) issue ([0-9]+) on ([^/]+)/(.*)$");
-        private static final Pattern PUSH_PATTERN = Pattern.compile("^([^ ]+) pushed to ([^ ]+) at ([^/]+)/(.*)$");
-        private static final Pattern CREATE_BRANCH_PATTERN = Pattern.compile("^([^ ]+) created (branch|tag) ([^ ]+) at ([^/]+)/(.*)$");
-        private static final Pattern CREATE_REPO_PATTERN = Pattern.compile("^([^ ]+) created repository (.*)$");
-        private static final Pattern WATCH_PATTERN = Pattern.compile("^([^ ]+) started watching ([^/]+)/(.*)$");
-        private static final Pattern MEMBER_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) ([^ ]+) to (.*)$");
-        private static final Pattern FORK_PATTERN = Pattern.compile("^([^ ]+) forked ([^/]+)/(.*)$");
-        private static final Pattern PUBLIC_PATTERN = Pattern.compile("^([^ ]+).* ([^ ]+)$");
-        private static final Pattern GOLLUM_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) a page in the ([^/]+)/(.*)$");
-        private static final Pattern DELETE_PATTERN = Pattern.compile("^([^ ]+) deleted (branch|tag) ([^ ]+) at (.*)$");
-        private static final Pattern DOWNLOAD_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) a file to ([^/]+)/(.*)$");
-        private static final Pattern FOLLOW_PATTERN = Pattern.compile("^([^ ]+) started following (.*)$");
-        private static final Pattern GIST_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) gist: ([0-9]+)$");
-        private static final Pattern PULLREQ_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) pull request ([0-9]+) on ([^/]+)/(.*)$");
-        private static final Pattern COMMENT_PATTERN = Pattern.compile("^([^ ]+) commented on ([^/]+)/(.*)$");
-        private static final Pattern FORK_APPLY_PATTERN = Pattern.compile("^([^ ]+) applied fork commits to ([^/]+)/(.*)$");
+    private static final Map<EventType, EventExtractor> lookup = Maps.newHashMapWithExpectedSize(extractors.size());
+
+    static {
+        for (EventExtractor e : extractors) {
+            lookup.put(e.getEventType(), e);
+        }
+    }
+
+    private static final XMLInputFactory factory = XMLInputFactory.newFactory();
+    static final Pattern ID_PATTERN = Pattern.compile("^.*:([A-Za-z]+)Event/([0-9]+)$");
+    static final Pattern ISSUES_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) issue ([0-9]+) on ([^/]+)/(.*)$");
+    static final Pattern PUSH_PATTERN = Pattern.compile("^([^ ]+) pushed to ([^ ]+) at ([^/]+)/(.*)$");
+    static final Pattern CREATE_BRANCH_PATTERN = Pattern.compile("^([^ ]+) created (branch|tag) ([^ ]+) at ([^/]+)/(.*)$");
+    static final Pattern CREATE_REPO_PATTERN = Pattern.compile("^([^ ]+) created repository (.*)$");
+    static final Pattern WATCH_PATTERN = Pattern.compile("^([^ ]+) started watching ([^/]+)/(.*)$");
+    static final Pattern MEMBER_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) ([^ ]+) to (.*)$");
+    static final Pattern FORK_PATTERN = Pattern.compile("^([^ ]+) forked ([^/]+)/(.*)$");
+    static final Pattern PUBLIC_PATTERN = Pattern.compile("^([^ ]+).* ([^ ]+)$");
+    static final Pattern GOLLUM_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) a page in the ([^/]+)/(.*)$");
+    static final Pattern DELETE_PATTERN = Pattern.compile("^([^ ]+) deleted (branch|tag) ([^ ]+) at (.*)$");
+    static final Pattern DOWNLOAD_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) a file to ([^/]+)/(.*)$");
+    static final Pattern FOLLOW_PATTERN = Pattern.compile("^([^ ]+) started following (.*)$");
+    static final Pattern GIST_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) gist: ([0-9]+)$");
+    static final Pattern PULLREQ_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) pull request ([0-9]+) on ([^/]+)/(.*)$");
+    static final Pattern COMMENT_PATTERN = Pattern.compile("^([^ ]+) commented on ([^/]+)/(.*)$");
+    static final Pattern FORK_APPLY_PATTERN = Pattern.compile("^([^ ]+) applied fork commits to ([^/]+)/(.*)$");
+
+    public static class EventMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
 
         /**
          * Parse the feed xml and extract the push event id and repository name
@@ -93,154 +123,9 @@ public class HubStats extends Configured implements Tool {
                         } else if (sr.getLocalName().equals("published")) {
                             builder.at(sr.getElementText());
                         } else if (sr.getLocalName().equals("title")) {
-                            switch (builder.getType()) {
-                                case Issues:
-                                    m = ISSUES_PATTERN.matcher(sr.getElementText());
-                                    if (m.matches()) {
-                                        builder.actor(m.group(1));
-                                        builder.subType(m.group(2));
-                                        builder.alternateId(Long.parseLong(m.group(3)));
-                                        builder.repoAccount(m.group(4));
-                                        builder.repoName(m.group(5));
-                                    }
-                                    break;
-                                case Push:
-                                    m = PUSH_PATTERN.matcher(sr.getElementText());
-                                    if (m.matches()) {
-                                        builder.actor(m.group(1));
-                                        builder.branch(m.group(2));
-                                        builder.repoAccount(m.group(3));
-                                        builder.repoName(m.group(4));
-                                    }
-                                    break;
-                                case Create:
-                                    String text = sr.getElementText();
-                                    m = CREATE_BRANCH_PATTERN.matcher(text);
-                                    if (m.matches()) {
-                                        builder.actor(m.group(1));
-                                        if (m.group(2).equals("tag")) {
-                                            builder.tag(m.group(3));
-                                        } else {
-                                            builder.branch(m.group(3));
-                                        }
-                                        builder.repoAccount(m.group(4));
-                                        builder.repoName(m.group(5));
-                                    } else {
-                                        m = CREATE_REPO_PATTERN.matcher(text);
-                                        if (m.matches()) {
-                                            builder.actor(m.group(1));
-                                            builder.repoAccount(m.group(1));
-                                            builder.repoName(m.group(2));
-                                        }
-                                    }
-                                    break;
-                                case Watch:
-                                    m = WATCH_PATTERN.matcher(sr.getElementText());
-                                    if (m.matches()) {
-                                        builder.actor(m.group(1));
-                                        builder.repoAccount(m.group(2));
-                                        builder.repoName(m.group(3));
-                                    }
-                                    break;
-                                case Member:
-                                    m = MEMBER_PATTERN.matcher(sr.getElementText());
-                                    if (m.matches()) {
-                                        builder.repoAccount(m.group(1));
-                                        builder.subType(m.group(2));
-                                        builder.actor(m.group(3));
-                                        builder.repoName(m.group(4));
-                                    }
-                                    break;
-                                case Fork:
-                                    m = FORK_PATTERN.matcher(sr.getElementText());
-                                    if (m.matches()) {
-                                        builder.actor(m.group(1));
-                                        builder.repoAccount(m.group(2));
-                                        builder.repoName(m.group(3));
-                                    }
-                                    break;
-                                case ForkApply:
-                                    m = FORK_APPLY_PATTERN.matcher(sr.getElementText());
-                                    if (m.matches()) {
-                                        builder.actor(m.group(1));
-                                        builder.repoAccount(m.group(2));
-                                        builder.repoName(m.group(3));
-                                    }
-                                    break;
-                                case Public:
-                                    m = PUBLIC_PATTERN.matcher(sr.getElementText());
-                                    if (m.matches()) {
-                                        builder.actor(m.group(1));
-                                        builder.repoAccount(m.group(1));
-                                        builder.repoName(m.group(2));
-                                    }
-                                    break;
-                                case Gollum:
-                                    m = GOLLUM_PATTERN.matcher(sr.getElementText());
-                                    if (m.matches()) {
-                                        builder.actor(m.group(1));
-                                        builder.subType(m.group(2));
-                                        builder.repoAccount(m.group(3));
-                                        builder.repoName(m.group(4));
-                                    }
-                                    break;
-                                case Delete:
-                                    m = DELETE_PATTERN.matcher(sr.getElementText());
-                                    if (m.matches()) {
-                                        builder.actor(m.group(1));
-                                        builder.repoAccount(m.group(1));
-                                        if (m.group(2).equals("tag")) {
-                                            builder.tag(m.group(3));
-                                        } else {
-                                            builder.branch(m.group(3));
-                                        }
-                                        builder.repoName(m.group(4));
-                                    }
-                                    break;
-                                case Download:
-                                    m = DOWNLOAD_PATTERN.matcher(sr.getElementText());
-                                    if (m.matches()) {
-                                        builder.actor(m.group(1));
-                                        builder.subType(m.group(2));
-                                        builder.repoAccount(m.group(3));
-                                        builder.repoName(m.group(4));
-                                    }
-                                    break;
-                                case Follow:
-                                    m = FOLLOW_PATTERN.matcher(sr.getElementText());
-                                    if (m.matches()) {
-                                        builder.actor(m.group(1));
-                                        builder.repoAccount(m.group(2));
-                                    }
-                                    break;
-                                case Gist:
-                                    m = GIST_PATTERN.matcher(sr.getElementText());
-                                    if (m.matches()) {
-                                        builder.actor(m.group(1));
-                                        builder.subType(m.group(2));
-                                        builder.alternateId(Long.parseLong(m.group(3)));
-                                    }
-                                    break;
-                                case PullRequest:
-                                    m = PULLREQ_PATTERN.matcher(sr.getElementText());
-                                    if (m.matches()) {
-                                        builder.actor(m.group(1));
-                                        builder.subType(m.group(2));
-                                        builder.alternateId(Long.parseLong(m.group(3)));
-                                        builder.repoAccount(m.group(4));
-                                        builder.repoName(m.group(5));
-                                    }
-                                    break;
-                                case CommitComment:
-                                    m = COMMENT_PATTERN.matcher(sr.getElementText());
-                                    if (m.matches()) {
-                                        builder.actor(m.group(1));
-                                        builder.repoAccount(m.group(2));
-                                        builder.repoName(m.group(3));
-                                    }
-                                    break;
-                                default:
-                                    throw new IllegalStateException("Event type not recognised: " + builder.getType());
+                            boolean hasEvent = lookup.get(builder.getType()).extract(sr.getElementText(), builder);
+                            if (!hasEvent) {
+                                throw new IllegalStateException(String.format("Event not matched: %s", builder.getType()));
                             }
                         }
                     } else if (event == XMLStreamConstants.END_ELEMENT && sr.getLocalName().equals("entry")) {
@@ -252,6 +137,287 @@ public class HubStats extends Configured implements Tool {
             catch (XMLStreamException xse) {
                 xse.printStackTrace(System.err);
             }
+        }
+
+
+    }
+
+    static final class IssueExtractor implements EventExtractor {
+
+        public EventType getEventType() {
+            return EventType.Issues;
+        }
+
+        public boolean extract(String text, Event.Builder builder) {
+            Matcher m = HubStats.ISSUES_PATTERN.matcher(text);
+            if (m.matches()) {
+                builder.actor(m.group(1));
+                builder.subType(m.group(2));
+                builder.alternateId(Long.parseLong(m.group(3)));
+                builder.repoAccount(m.group(4));
+                builder.repoName(m.group(5));
+            }
+            return m.matches();
+        }
+    }
+
+    static final class PushExtractor implements EventExtractor {
+
+        public EventType getEventType() {
+            return EventType.Push;
+        }
+
+        public boolean extract(String text, Event.Builder builder) {
+            Matcher m = HubStats.PUSH_PATTERN.matcher(text);
+            if (m.matches()) {
+                builder.actor(m.group(1));
+                builder.branch(m.group(2));
+                builder.repoAccount(m.group(3));
+                builder.repoName(m.group(4));
+            }
+            return m.matches();
+        }
+    }
+
+    static final class CreateExtractor implements EventExtractor {
+
+        public EventType getEventType() {
+            return EventType.Create;
+        }
+
+        public boolean extract(String text, Event.Builder builder) {
+            Matcher m = CREATE_BRANCH_PATTERN.matcher(text);
+            if (m.matches()) {
+                builder.actor(m.group(1));
+                if (m.group(2).equals("tag")) {
+                    builder.tag(m.group(3));
+                } else {
+                    builder.branch(m.group(3));
+                }
+                builder.repoAccount(m.group(4));
+                builder.repoName(m.group(5));
+            } else {
+                m = CREATE_REPO_PATTERN.matcher(text);
+                if (m.matches()) {
+                    builder.actor(m.group(1));
+                    builder.repoAccount(m.group(1));
+                    builder.repoName(m.group(2));
+                }
+            }
+            return m.matches();
+        }
+    }
+
+    static final class WatchExtractor implements EventExtractor {
+
+        public EventType getEventType() {
+            return EventType.Watch;
+        }
+
+        public boolean extract(String text, Event.Builder builder) {
+            Matcher m = HubStats.WATCH_PATTERN.matcher(text);
+            if (m.matches()) {
+                builder.actor(m.group(1));
+                builder.repoAccount(m.group(2));
+                builder.repoName(m.group(3));
+            }
+            return m.matches();
+        }
+    }
+
+    static final class MemberExtractor implements EventExtractor {
+
+        public EventType getEventType() {
+            return EventType.Member;
+        }
+
+        public boolean extract(String text, Event.Builder builder) {
+            Matcher m = MEMBER_PATTERN.matcher(text);
+            if (m.matches()) {
+                builder.repoAccount(m.group(1));
+                builder.subType(m.group(2));
+                builder.actor(m.group(3));
+                builder.repoName(m.group(4));
+            }
+            return m.matches();
+        }
+    }
+
+    static final class ForkExtractor implements EventExtractor {
+
+        public EventType getEventType() {
+            return EventType.Fork;
+        }
+
+        public boolean extract(String text, Event.Builder builder) {
+            Matcher m = FORK_PATTERN.matcher(text);
+            if (m.matches()) {
+                builder.actor(m.group(1));
+                builder.repoAccount(m.group(2));
+                builder.repoName(m.group(3));
+            }
+            return m.matches();
+        }
+    }
+
+    static final class ForkApplyExtractor implements EventExtractor {
+
+        public EventType getEventType() {
+            return EventType.ForkApply;
+        }
+
+        public boolean extract(String text, Event.Builder builder) {
+            Matcher m = FORK_APPLY_PATTERN.matcher(text);
+            if (m.matches()) {
+                builder.actor(m.group(1));
+                builder.repoAccount(m.group(2));
+                builder.repoName(m.group(3));
+            }
+            return m.matches();
+        }
+    }
+
+    static final class PublicExtractor implements EventExtractor {
+
+        public EventType getEventType() {
+            return EventType.Public;
+        }
+
+        public boolean extract(String text, Event.Builder builder) {
+            Matcher m = PUBLIC_PATTERN.matcher(text);
+            if (m.matches()) {
+                builder.actor(m.group(1));
+                builder.repoAccount(m.group(1));
+                builder.repoName(m.group(2));
+            }
+            return m.matches();
+        }
+    }
+
+    static final class GollumExtractor implements EventExtractor {
+
+        public EventType getEventType() {
+            return EventType.Gollum;
+        }
+
+        public boolean extract(String text, Event.Builder builder) {
+            Matcher m = GOLLUM_PATTERN.matcher(text);
+            if (m.matches()) {
+                builder.actor(m.group(1));
+                builder.subType(m.group(2));
+                builder.repoAccount(m.group(3));
+                builder.repoName(m.group(4));
+            }
+            return m.matches();
+        }
+    }
+
+    static final class DeleteExtractor implements EventExtractor {
+
+        public EventType getEventType() {
+            return EventType.Delete;
+        }
+
+        public boolean extract(String text, Event.Builder builder) {
+            Matcher m = DELETE_PATTERN.matcher(text);
+            if (m.matches()) {
+                builder.actor(m.group(1));
+                builder.repoAccount(m.group(1));
+                if (m.group(2).equals("tag")) {
+                    builder.tag(m.group(3));
+                } else {
+                    builder.branch(m.group(3));
+                }
+                builder.repoName(m.group(4));
+            }
+            return m.matches();
+        }
+    }
+
+    static final class DownloadExtractor implements EventExtractor {
+
+        public EventType getEventType() {
+            return EventType.Download;
+        }
+
+        public boolean extract(String text, Event.Builder builder) {
+            Matcher m = DOWNLOAD_PATTERN.matcher(text);
+            if (m.matches()) {
+                builder.actor(m.group(1));
+                builder.subType(m.group(2));
+                builder.repoAccount(m.group(3));
+                builder.repoName(m.group(4));
+            }
+            return m.matches();
+        }
+    }
+
+    static final class FollowExtractor implements EventExtractor {
+
+        public EventType getEventType() {
+            return EventType.Follow;
+        }
+
+        public boolean extract(String text, Event.Builder builder) {
+            Matcher m = FOLLOW_PATTERN.matcher(text);
+            if (m.matches()) {
+                builder.actor(m.group(1));
+                builder.repoAccount(m.group(2));
+            }
+            return m.matches();
+        }
+    }
+
+    static final class GistExtractor implements EventExtractor {
+
+        public EventType getEventType() {
+            return EventType.Gist;
+        }
+
+        public boolean extract(String text, Event.Builder builder) {
+            Matcher m = GIST_PATTERN.matcher(text);
+            if (m.matches()) {
+                builder.actor(m.group(1));
+                builder.subType(m.group(2));
+                builder.alternateId(Long.parseLong(m.group(3)));
+            }
+            return m.matches();
+        }
+    }
+
+    static final class PullRequestExtractor implements EventExtractor {
+
+        public EventType getEventType() {
+            return EventType.PullRequest;
+        }
+
+        public boolean extract(String text, Event.Builder builder) {
+            Matcher m = PULLREQ_PATTERN.matcher(text);
+            if (m.matches()) {
+                builder.actor(m.group(1));
+                builder.subType(m.group(2));
+                builder.alternateId(Long.parseLong(m.group(3)));
+                builder.repoAccount(m.group(4));
+                builder.repoName(m.group(5));
+            }
+            return m.matches();
+        }
+    }
+
+    static final class CommitCommentExtractor implements EventExtractor {
+
+        public EventType getEventType() {
+            return EventType.CommitComment;
+        }
+
+        public boolean extract(String text, Event.Builder builder) {
+            Matcher m = COMMENT_PATTERN.matcher(text);
+            if (m.matches()) {
+                builder.actor(m.group(1));
+                builder.repoAccount(m.group(2));
+                builder.repoName(m.group(3));
+            }
+            return m.matches();
         }
     }
 
@@ -297,5 +463,6 @@ public class HubStats extends Configured implements Tool {
     public static void main(String[] args) throws Exception {
         ToolRunner.run(new HubStats(), args);
     }
+
 
 }
