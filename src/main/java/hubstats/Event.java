@@ -2,12 +2,13 @@ package hubstats;
 
 /**
  * A GitHub event. Use Event.Builder to construct a new instance.
+ *
  * @see Event.Builder
  */
 public class Event {
 
     private static final char SEP = '\t';
-    
+
     private final long eventId;
     private final EventType eventType;
     private final String at;
@@ -35,7 +36,7 @@ public class Event {
         private String subtype;
 
         Builder() {
-            
+
         }
 
         public Builder(long eventId, EventType eventType, String at, String actor) {
@@ -102,6 +103,7 @@ public class Event {
         /**
          * Build a new Event based on the values provided to this builder. Validation occurs at this point that the
          * event values provided are valid.
+         *
          * @return A new Event
          */
         public Event build() {
@@ -119,30 +121,27 @@ public class Event {
 
         if (builder.actor == null || builder.actor.trim().equals("")) {
             throw new IllegalArgumentException("Actor account name cannot be null or empty");
-        }
-        else {
+        } else {
             this.actor = builder.actor.trim();
         }
 
-        if (! builder.eventType.needsAccount()) {
+        if (!builder.eventType.needsAccount()) {
             if (builder.repoAccount != null) {
                 throw new IllegalArgumentException(
                         String.format("%s event must not have an associated repository account", builder.eventType));
             }
-        }
-        else {
+        } else {
             if (builder.repoAccount == null || builder.repoAccount.trim().equals("")) {
                 throw new IllegalArgumentException(String.format("%s event must have an associated repository account", builder.eventType));
             }
         }
 
-        if (! builder.eventType.needsRepoName()) {
+        if (!builder.eventType.needsRepoName()) {
             if (builder.repoName != null) {
                 throw new IllegalArgumentException(String.format("%s event must not have an associated repository name",
                         builder.eventType));
             }
-        }
-        else {
+        } else {
             if (builder.repoName == null || builder.repoName.trim().equals("")) {
                 throw new IllegalArgumentException(String.format("%s event must have an associated repository name", builder.eventType));
             }
@@ -152,18 +151,16 @@ public class Event {
             if (builder.branch == null || builder.branch.trim().equals("")) {
                 throw new IllegalArgumentException("Push event must have an associated branch");
             }
-        }
-        else if (builder.eventType == EventType.Create || builder.eventType == EventType.Delete) {
+        } else if (builder.eventType == EventType.Create || builder.eventType == EventType.Delete) {
             if (builder.branch != null && builder.tag != null) {
                 throw new IllegalArgumentException(String.format("Can't %s a branch and a tag in the same event",
-                        builder.eventType.toString().toLowerCase()));    
+                        builder.eventType.toString().toLowerCase()));
             }
         }
 
         if (builder.alternateId == 0L && builder.eventType.requiresId()) {
-                throwMustSpecify(builder.eventType, "id");
-        }
-        else if (builder.subtype == null && builder.eventType.requiresType()) {
+            throwMustSpecify(builder.eventType, "id");
+        } else if (builder.subtype == null && builder.eventType.requiresType()) {
             throwMustSpecify(builder.eventType, "type");
         }
 
@@ -211,7 +208,7 @@ public class Event {
     /**
      * Returns the string representation of this Event. The format is a single line, separated by tabs. The format of
      * each line may not be the same between versions of this class.
-     *
+     * <p/>
      * The fields are:
      * <ol>
      * <li>event_id - The unique numeric event id</li>
@@ -227,7 +224,7 @@ public class Event {
      * </ol>
      *
      * @return This event as a String.
-     **/
+     */
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();

@@ -98,6 +98,7 @@ public enum EventType {
 
     /**
      * If this event type needs an account to be specified
+     *
      * @return True if an account is needed, false means that an account must not be specified
      */
     boolean needsAccount() {
@@ -106,6 +107,7 @@ public enum EventType {
 
     /**
      * If this event type needs an repository name to be specified
+     *
      * @return True if a repository name is needed, false means that a repository name must not be specified
      */
     boolean needsRepoName() {
@@ -114,6 +116,7 @@ public enum EventType {
 
     /**
      * If this event type needs an additional id
+     *
      * @return True if an id is required, false means that an id may or may not be specified
      */
     boolean requiresId() {
@@ -122,6 +125,7 @@ public enum EventType {
 
     /**
      * If this event type needs an additional type
+     *
      * @return True if an type is required, false means that a type may or may not be specified
      */
     boolean requiresType() {

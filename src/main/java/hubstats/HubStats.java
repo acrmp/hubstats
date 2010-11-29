@@ -12,7 +12,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
-import org.apache.mahout.classifier.bayes.XmlInputFormat; // From mahout-examples
+import org.apache.mahout.classifier.bayes.XmlInputFormat;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -56,10 +56,11 @@ public class HubStats extends Configured implements Tool {
 
         /**
          * Parse the feed xml and extract the push event id and repository name
-         * @param key The offset of the XML feed within the larger timeline
-         * @param value The XML feed text
+         *
+         * @param key     The offset of the XML feed within the larger timeline
+         * @param value   The XML feed text
          * @param context The job context
-         * @throws IOException If there is an exception reading or writing data
+         * @throws IOException          If there is an exception reading or writing data
          * @throws InterruptedException If this job is interrupted
          */
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
@@ -78,12 +79,10 @@ public class HubStats extends Configured implements Tool {
                 for (int event = sr.next(); event != XMLStreamConstants.END_DOCUMENT; event = sr.next()) {
                     if (event == XMLStreamConstants.START_ELEMENT) {
                         if (sr.getLocalName().equals("entry")) {
-                            builder = new Event.Builder();   
-                        }
-                        else if (builder == null) {
+                            builder = new Event.Builder();
+                        } else if (builder == null) {
                             continue;
-                        }
-                        else if (sr.getLocalName().equals("id")) {
+                        } else if (sr.getLocalName().equals("id")) {
                             m = ID_PATTERN.matcher(sr.getElementText());
                             if (m.matches()) {
                                 builder.type(EventType.valueOf(m.group(1)));
@@ -91,11 +90,9 @@ public class HubStats extends Configured implements Tool {
                                 id.set(eventId);
                                 builder.eventId(eventId);
                             }
-                        }
-                        else if (sr.getLocalName().equals("published")) {
+                        } else if (sr.getLocalName().equals("published")) {
                             builder.at(sr.getElementText());
-                        }
-                        else if (sr.getLocalName().equals("title")) {
+                        } else if (sr.getLocalName().equals("title")) {
                             switch (builder.getType()) {
                                 case Issues:
                                     m = ISSUES_PATTERN.matcher(sr.getElementText());
@@ -114,7 +111,7 @@ public class HubStats extends Configured implements Tool {
                                         builder.branch(m.group(2));
                                         builder.repoAccount(m.group(3));
                                         builder.repoName(m.group(4));
-                                    }                                   
+                                    }
                                     break;
                                 case Create:
                                     String text = sr.getElementText();
@@ -123,14 +120,12 @@ public class HubStats extends Configured implements Tool {
                                         builder.actor(m.group(1));
                                         if (m.group(2).equals("tag")) {
                                             builder.tag(m.group(3));
-                                        }
-                                        else {
+                                        } else {
                                             builder.branch(m.group(3));
                                         }
                                         builder.repoAccount(m.group(4));
                                         builder.repoName(m.group(5));
-                                    }
-                                    else {
+                                    } else {
                                         m = CREATE_REPO_PATTERN.matcher(text);
                                         if (m.matches()) {
                                             builder.actor(m.group(1));
@@ -195,9 +190,8 @@ public class HubStats extends Configured implements Tool {
                                         builder.actor(m.group(1));
                                         builder.repoAccount(m.group(1));
                                         if (m.group(2).equals("tag")) {
-                                            builder.tag(m.group(3));    
-                                        }
-                                        else {
+                                            builder.tag(m.group(3));
+                                        } else {
                                             builder.branch(m.group(3));
                                         }
                                         builder.repoName(m.group(4));
@@ -249,8 +243,7 @@ public class HubStats extends Configured implements Tool {
                                     throw new IllegalStateException("Event type not recognised: " + builder.getType());
                             }
                         }
-                    }
-                    else if (event == XMLStreamConstants.END_ELEMENT && sr.getLocalName().equals("entry")) {
+                    } else if (event == XMLStreamConstants.END_ELEMENT && sr.getLocalName().equals("entry")) {
                         eventText.set(builder.build().toString());
                         context.write(id, eventText);
                     }
@@ -264,10 +257,11 @@ public class HubStats extends Configured implements Tool {
 
     /**
      * Remove duplicate events
+     *
      * @param <LongWritable> The event id
      * @param <Text> The tab-separated field values
      */
-    public static class EventReducer<LongWritable,Text> extends Reducer<LongWritable,Text,LongWritable,Text> {
+    public static class EventReducer<LongWritable, Text> extends Reducer<LongWritable, Text, LongWritable, Text> {
         public void reduce(LongWritable key, Iterable<Text> values, Context context)
                 throws IOException, InterruptedException {
             Iterator<Text> i = values.iterator();

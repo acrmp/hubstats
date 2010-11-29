@@ -27,7 +27,7 @@ public class EventTest {
             fail();
         }
         catch (IllegalArgumentException e) {
-            assertEquals("Event id must be greater than zero (was -1)", e.getMessage());    
+            assertEquals("Event id must be greater than zero (was -1)", e.getMessage());
         }
     }
 
@@ -51,7 +51,7 @@ public class EventTest {
     @Ignore
     public void invalidDate() {
     }
-    
+
     @Test
     @Ignore
     public void invalidTime() {
@@ -131,7 +131,7 @@ public class EventTest {
     @Test
     public void pushTrimPaddedRepoAccount() {
         Event e = new Event.Builder(1007541708L, EventType.valueOf("Push"), "2010-11-19T03:55:54-08:00", "esil")
-            .repoAccount("\tfoo\t").repoName("cmake").branch("master").build();
+                .repoAccount("\tfoo\t").repoName("cmake").branch("master").build();
         assertEquals("foo", e.getRepoAccount());
     }
 
@@ -162,7 +162,7 @@ public class EventTest {
     @Test
     public void pushTrimPaddedRepoName() {
         Event e = new Event.Builder(1007541708L, EventType.valueOf("Push"), "2010-11-19T03:55:54-08:00", "esil")
-            .repoAccount("foo").repoName("  cmake").branch("master").build();
+                .repoAccount("foo").repoName("  cmake").branch("master").build();
         assertEquals("cmake", e.getRepoName());
     }
 
@@ -193,7 +193,7 @@ public class EventTest {
     @Test
     public void pushTrimPaddedBranch() {
         Event e = new Event.Builder(1007541708L, EventType.valueOf("Push"), "2010-11-19T03:55:54-08:00", "esil")
-            .repoAccount("foo").repoName("cmake").branch("master\t    \t\t").build();
+                .repoAccount("foo").repoName("cmake").branch("master\t    \t\t").build();
         assertEquals("master", e.getBranch());
     }
 
@@ -201,7 +201,7 @@ public class EventTest {
     public void pushBranch() {
         Event e = new Event.Builder(1007541480L, EventType.valueOf("Push"), "2010-11-19T03:55:07-08:00", "gfunkmonk")
                 .repoAccount("gfunkmonk").repoName("android_packages_apps_Camera").branch("froyo").build();
-        assertEquals("1007541480\tPush\t2010-11-19T03:55:07-08:00\tgfunkmonk\tgfunkmonk\tandroid_packages_apps_Camera\tfroyo\t\t\t",e.toString());
+        assertEquals("1007541480\tPush\t2010-11-19T03:55:07-08:00\tgfunkmonk\tgfunkmonk\tandroid_packages_apps_Camera\tfroyo\t\t\t", e.toString());
     }
 
     @Test
@@ -221,7 +221,7 @@ public class EventTest {
     @Test
     public void createRepo() {
         Event e = new Event.Builder(1007541619L, EventType.valueOf("Create"), "2010-11-19T03:55:29-08:00", "channgo")
-            .repoAccount("channgo").repoName("SmallGift").build();
+                .repoAccount("channgo").repoName("SmallGift").build();
         assertEquals("1007541619\tCreate\t2010-11-19T03:55:29-08:00\tchanngo\tchanngo\tSmallGift\t\t\t\t", e.toString());
     }
 
@@ -236,7 +236,7 @@ public class EventTest {
     public void createMustHaveRepoAccount() {
         try {
             new Event.Builder(1007541721L, EventType.valueOf("Create"), "2010-11-19T03:55:59-08:00", "refaim")
-                .repoName("ttb-game").branch("oop").build();
+                    .repoName("ttb-game").branch("oop").build();
             fail();
         }
         catch (IllegalArgumentException e) {
@@ -248,7 +248,7 @@ public class EventTest {
     public void createMustHaveRepoName() {
         try {
             new Event.Builder(1007541721L, EventType.valueOf("Create"), "2010-11-19T03:55:59-08:00", "refaim")
-                .repoAccount("marcomaggi").branch("oop").build();
+                    .repoAccount("marcomaggi").branch("oop").build();
             fail();
         }
         catch (IllegalArgumentException e) {
@@ -259,15 +259,15 @@ public class EventTest {
     @Test
     public void createBranch() {
         Event e = new Event.Builder(1007541721L, EventType.valueOf("Create"), "2010-11-19T03:55:59-08:00", "refaim")
-            .repoAccount("kravitz").repoName("ttb-game").branch("oop").build();
+                .repoAccount("kravitz").repoName("ttb-game").branch("oop").build();
         assertEquals("1007541721\tCreate\t2010-11-19T03:55:59-08:00\trefaim\tkravitz\tttb-game\toop\t\t\t", e.toString());
     }
-    
+
     @Test
     public void branchAndTag() {
         try {
             new Event.Builder(1007541721L, EventType.valueOf("Create"), "2010-11-19T03:55:59-08:00", "refaim")
-                .repoAccount("kravitz").repoName("ttb-game").branch("oop").tag("oop2").build();
+                    .repoAccount("kravitz").repoName("ttb-game").branch("oop").tag("oop2").build();
             fail();
         }
         catch (IllegalArgumentException e) {
@@ -302,7 +302,7 @@ public class EventTest {
             fail();
         }
         catch (IllegalArgumentException e) {
-            assertEquals("Watch event must have an associated repository name", e.getMessage());    
+            assertEquals("Watch event must have an associated repository name", e.getMessage());
         }
     }
 
@@ -382,7 +382,7 @@ public class EventTest {
             fail();
         }
         catch (IllegalArgumentException e) {
-            assertEquals("Follow event must have an associated repository account", e.getMessage());    
+            assertEquals("Follow event must have an associated repository account", e.getMessage());
         }
     }
 
@@ -390,7 +390,7 @@ public class EventTest {
     public void followMustNotHaveRepoName() {
         try {
             new Event.Builder(1007545371L, EventType.valueOf("Follow"), "2010-11-19T03:58:03-08:00", "vitorpc")
-                .repoAccount("tkyk").repoName("bar").build();        
+                    .repoAccount("tkyk").repoName("bar").build();
             fail();
         }
         catch (IllegalArgumentException e) {
@@ -425,7 +425,7 @@ public class EventTest {
             fail();
         }
         catch (IllegalArgumentException e) {
-            assertEquals("Fork event must have an associated repository name", e.getMessage());    
+            assertEquals("Fork event must have an associated repository name", e.getMessage());
         }
     }
 
@@ -510,7 +510,7 @@ public class EventTest {
     public void gistMustNotSpecifyRepoAccount() {
         try {
             new Event.Builder(1007577244L, EventType.valueOf("Gist"), "2010-11-19T04:33:47-08:00", "tkyk")
-                .repoAccount("foo").alternateId(706463L).subType("forked").build();
+                    .repoAccount("foo").alternateId(706463L).subType("forked").build();
             fail();
         }
         catch (IllegalArgumentException e) {
@@ -522,7 +522,7 @@ public class EventTest {
     public void gistMustNotSpecifyRepoName() {
         try {
             new Event.Builder(1007577244L, EventType.valueOf("Gist"), "2010-11-19T04:33:47-08:00", "tkyk")
-                .repoName("bar").alternateId(706463L).subType("forked").build();
+                    .repoName("bar").alternateId(706463L).subType("forked").build();
             fail();
         }
         catch (IllegalArgumentException e) {
@@ -558,7 +558,7 @@ public class EventTest {
             fail();
         }
         catch (IllegalArgumentException e) {
-            assertEquals("Member event must have an associated repository name", e.getMessage());    
+            assertEquals("Member event must have an associated repository name", e.getMessage());
         }
     }
 
@@ -591,7 +591,7 @@ public class EventTest {
             fail();
         }
         catch (Exception e) {
-            assertEquals("PullRequest event must have an associated repository account", e.getMessage());    
+            assertEquals("PullRequest event must have an associated repository account", e.getMessage());
         }
     }
 
@@ -646,7 +646,7 @@ public class EventTest {
             fail();
         }
         catch (IllegalArgumentException e) {
-            assertEquals("Download event must have an associated repository account", e.getMessage());    
+            assertEquals("Download event must have an associated repository account", e.getMessage());
         }
     }
 
@@ -658,7 +658,7 @@ public class EventTest {
             fail();
         }
         catch (IllegalArgumentException e) {
-            assertEquals("Download event must have an associated repository name", e.getMessage());    
+            assertEquals("Download event must have an associated repository name", e.getMessage());
         }
     }
 
@@ -666,7 +666,7 @@ public class EventTest {
     public void downloadMustSpecifyType() {
         try {
             new Event.Builder(1007541464L, EventType.valueOf("Download"), "2010-11-19T03:55:04-08:00", "Duny")
-                .repoAccount("Duny").repoName("foo_my_autoplaylist").build();
+                    .repoAccount("Duny").repoName("foo_my_autoplaylist").build();
             fail();
         }
         catch (IllegalArgumentException e) {
@@ -692,7 +692,7 @@ public class EventTest {
     public void wikiEventMustSpecifyRepoAccount() {
         try {
             new Event.Builder(1007555427L, EventType.valueOf("Gollum"), "2010-11-19T04:02:27-08:00", "rakd")
-                .repoName("test wiki").subType("created").build();
+                    .repoName("test wiki").subType("created").build();
             fail();
         }
         catch (IllegalArgumentException e) {
@@ -704,7 +704,7 @@ public class EventTest {
     public void wikiEventMustSpecifyRepoName() {
         try {
             new Event.Builder(1007555427L, EventType.valueOf("Gollum"), "2010-11-19T04:02:27-08:00", "rakd")
-                .repoAccount("rakd").subType("created").build();
+                    .repoAccount("rakd").subType("created").build();
             fail();
         }
         catch (IllegalArgumentException e) {
@@ -739,7 +739,7 @@ public class EventTest {
             fail();
         }
         catch (IllegalArgumentException e) {
-            assertEquals("Delete event must have an associated repository account", e.getMessage());        
+            assertEquals("Delete event must have an associated repository account", e.getMessage());
         }
     }
 
@@ -751,7 +751,7 @@ public class EventTest {
             fail();
         }
         catch (IllegalArgumentException e) {
-            assertEquals("Delete event must have an associated repository name", e.getMessage());        
+            assertEquals("Delete event must have an associated repository name", e.getMessage());
         }
     }
 
