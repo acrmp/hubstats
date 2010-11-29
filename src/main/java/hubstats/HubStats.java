@@ -6,6 +6,7 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
@@ -19,6 +20,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,7 +33,7 @@ import java.util.regex.Pattern;
  */
 public class HubStats extends Configured implements Tool {
 
-    public static class PushEventMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
+    public static class EventMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
 
         private static final XMLInputFactory factory = XMLInputFactory.newFactory();
         private static final Pattern ID_PATTERN = Pattern.compile("^.*:([A-Za-z]+)Event/([0-9]+)$");
@@ -50,6 +52,7 @@ public class HubStats extends Configured implements Tool {
         private static final Pattern GIST_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) gist: ([0-9]+)$");
         private static final Pattern PULLREQ_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) pull request ([0-9]+) on ([^/]+)/(.*)$");
         private static final Pattern COMMENT_PATTERN = Pattern.compile("^([^ ]+) commented on ([^/]+)/(.*)$");
+        private static final Pattern FORK_APPLY_PATTERN = Pattern.compile("^([^ ]+) applied fork commits to ([^/]+)/(.*)$");
 
         /**
          * Parse the feed xml and extract the push event id and repository name
@@ -161,6 +164,14 @@ public class HubStats extends Configured implements Tool {
                                         builder.repoName(m.group(3));
                                     }
                                     break;
+                                case ForkApply:
+                                    m = FORK_APPLY_PATTERN.matcher(sr.getElementText());
+                                    if (m.matches()) {
+                                        builder.actor(m.group(1));
+                                        builder.repoAccount(m.group(2));
+                                        builder.repoName(m.group(3));
+                                    }
+                                    break;
                                 case Public:
                                     m = PUBLIC_PATTERN.matcher(sr.getElementText());
                                     if (m.matches()) {
@@ -251,6 +262,21 @@ public class HubStats extends Configured implements Tool {
         }
     }
 
+    /**
+     * Remove duplicate events
+     * @param <LongWritable> The event id
+     * @param <Text> The tab-separated field values
+     */
+    public static class EventReducer<LongWritable,Text> extends Reducer<LongWritable,Text,LongWritable,Text> {
+        public void reduce(LongWritable key, Iterable<Text> values, Context context)
+                throws IOException, InterruptedException {
+            Iterator<Text> i = values.iterator();
+            if (i.hasNext()) {
+                context.write(key, i.next());
+            }
+        }
+    }
+
     @Override
     public int run(String[] args) throws Exception {
         Job job = new Job();
@@ -258,7 +284,8 @@ public class HubStats extends Configured implements Tool {
         job.setJobName("hubstats");
         job.setOutputKeyClass(LongWritable.class);
         job.setOutputValueClass(Text.class);
-        job.setMapperClass(PushEventMapper.class);
+        job.setMapperClass(EventMapper.class);
+        job.setReducerClass(EventReducer.class);
 
         job.setInputFormatClass(XmlInputFormat.class);
         job.setOutputFormatClass(TextOutputFormat.class);

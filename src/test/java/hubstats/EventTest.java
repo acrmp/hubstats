@@ -430,6 +430,38 @@ public class EventTest {
     }
 
     @Test
+    public void applyFork() {
+        Event e = new Event.Builder(1007566139L, EventType.valueOf("ForkApply"), "2010-11-19T04:21:21-08:00", "cdotyone")
+                .repoAccount("cdotyone").repoName("mootools-meio-mask").build();
+        assertEquals("1007566139\tForkApply\t2010-11-19T04:21:21-08:00\tcdotyone\tcdotyone\tmootools-meio-mask\t\t\t\t",
+                e.toString());
+    }
+
+    @Test
+    public void forkApplyMustHaveRepoAccount() {
+        try {
+            new Event.Builder(1007566139L, EventType.valueOf("ForkApply"), "2010-11-19T04:21:21-08:00", "cdotyone")
+                    .repoName("mootools-meio-mask").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("ForkApply event must have an associated repository account", e.getMessage());
+        }
+    }
+
+    @Test
+    public void forkApplyMustHaveRepoName() {
+        try {
+            new Event.Builder(1007566139L, EventType.valueOf("ForkApply"), "2010-11-19T04:21:21-08:00", "cdotyone")
+                    .repoAccount("cdotyone").build();
+            fail();
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("ForkApply event must have an associated repository name", e.getMessage());
+        }
+    }
+
+    @Test
     public void updateGist() {
         Event e = new Event.Builder(1007546130L, EventType.valueOf("Gist"), "2010-11-19T03:58:11-08:00", "zakuro563")
                 .alternateId(706394L).subType("updated").build();

@@ -28,7 +28,7 @@ public class HubStatsTest {
 
     @Before
     public void setUp() {
-        Mapper<LongWritable, Text, LongWritable, Text> mapper = new HubStats.PushEventMapper();
+        Mapper<LongWritable, Text, LongWritable, Text> mapper = new HubStats.EventMapper();
         driver = new MapDriver<LongWritable, Text, LongWritable, Text>(mapper);
     }
 
@@ -282,6 +282,10 @@ public class HubStatsTest {
                 new Pair<LongWritable, Text> (new LongWritable(1007547055L), new Text(
                     new Event.Builder(1007547055L, EventType.valueOf("CommitComment"), "2010-11-19T03:59:22-08:00", "VladimirMangos")
                 .       repoAccount("mangos").repoName("mangos").build().toString()
+                )),
+                new Pair<LongWritable, Text> (new LongWritable(1007566139L), new Text(
+                    new Event.Builder(1007566139L, EventType.valueOf("ForkApply"), "2010-11-19T04:21:21-08:00", "cdotyone")
+                        .repoAccount("cdotyone").repoName("mootools-meio-mask").build().toString()
                 ))
         );
         assertListEquals(expected, out);

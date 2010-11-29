@@ -36,6 +36,11 @@ public enum EventType {
     Fork(),
 
     /**
+     * Commits from a fork have been applied to the repository
+     */
+    ForkApply(),
+
+    /**
      * A Gist has been created, updated or forked
      */
     Gist(false, false, true, true),
