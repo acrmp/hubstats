@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
  */
 public class HubStats extends Configured implements Tool {
 
-    private static final List<EventExtractor> extractors = Lists.newArrayList(
+    private static final List<EventExtractor> EVENT_EXTRACTORS = Lists.newArrayList(
             new IssueExtractor(),
             new PushExtractor(),
             new CreateExtractor(),
@@ -55,15 +55,16 @@ public class HubStats extends Configured implements Tool {
             new CommitCommentExtractor()
     );
 
-    private static final Map<EventType, EventExtractor> lookup = Maps.newHashMapWithExpectedSize(extractors.size());
+    private static final Map<EventType, EventExtractor> TYPE_EXTRACTOR_MAP =
+            Maps.newHashMapWithExpectedSize(EVENT_EXTRACTORS.size());
 
     static {
-        for (EventExtractor e : extractors) {
-            lookup.put(e.getEventType(), e);
+        for (EventExtractor e : EVENT_EXTRACTORS) {
+            TYPE_EXTRACTOR_MAP.put(e.getEventType(), e);
         }
     }
 
-    private static final XMLInputFactory factory = XMLInputFactory.newFactory();
+    private static final XMLInputFactory INPUT_FACTORY = XMLInputFactory.newFactory();
     static final Pattern ID_PATTERN = Pattern.compile("^.*:([A-Za-z]+)Event/([0-9]+)$");
     static final Pattern ISSUES_PATTERN = Pattern.compile("^([^ ]+) ([^ ]+) issue ([0-9]+) on ([^/]+)/(.*)$");
     static final Pattern PUSH_PATTERN = Pattern.compile("^([^ ]+) pushed to ([^ ]+) at ([^/]+)/(.*)$");
@@ -82,7 +83,7 @@ public class HubStats extends Configured implements Tool {
     static final Pattern COMMENT_PATTERN = Pattern.compile("^([^ ]+) commented on ([^/]+)/(.*)$");
     static final Pattern FORK_APPLY_PATTERN = Pattern.compile("^([^ ]+) applied fork commits to ([^/]+)/(.*)$");
 
-    public static class EventMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
+    public static final class EventMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
 
         /**
          * Parse the feed xml and extract the push event id and repository name
@@ -99,9 +100,8 @@ public class HubStats extends Configured implements Tool {
             }
 
             try {
-                XMLStreamReader sr = factory.createXMLStreamReader(new StringReader(value.toString()));
+                XMLStreamReader sr = INPUT_FACTORY.createXMLStreamReader(new StringReader(value.toString()));
 
-                Matcher m;
                 LongWritable id = new LongWritable();
                 Text eventText = new Text();
 
@@ -113,7 +113,7 @@ public class HubStats extends Configured implements Tool {
                         } else if (builder == null) {
                             continue;
                         } else if (sr.getLocalName().equals("id")) {
-                            m = ID_PATTERN.matcher(sr.getElementText());
+                            Matcher m = ID_PATTERN.matcher(sr.getElementText());
                             if (m.matches()) {
                                 builder.type(EventType.valueOf(m.group(1)));
                                 long eventId = Long.parseLong(m.group(2));
@@ -123,12 +123,13 @@ public class HubStats extends Configured implements Tool {
                         } else if (sr.getLocalName().equals("published")) {
                             builder.at(sr.getElementText());
                         } else if (sr.getLocalName().equals("title")) {
-                            boolean hasEvent = lookup.get(builder.getType()).extract(sr.getElementText(), builder);
+                            boolean hasEvent = TYPE_EXTRACTOR_MAP.get(builder.getType()).extract(sr.getElementText(), builder);
                             if (!hasEvent) {
                                 throw new IllegalStateException(String.format("Event not matched: %s", builder.getType()));
                             }
                         }
                     } else if (event == XMLStreamConstants.END_ELEMENT && sr.getLocalName().equals("entry")) {
+                        assert builder != null;
                         eventText.set(builder.build().toString());
                         context.write(id, eventText);
                     }
@@ -427,7 +428,7 @@ public class HubStats extends Configured implements Tool {
      * @param <LongWritable> The event id
      * @param <Text> The tab-separated field values
      */
-    public static class EventReducer<LongWritable, Text> extends Reducer<LongWritable, Text, LongWritable, Text> {
+    public static final class EventReducer<LongWritable, Text> extends Reducer<LongWritable, Text, LongWritable, Text> {
         public void reduce(LongWritable key, Iterable<Text> values, Context context)
                 throws IOException, InterruptedException {
             Iterator<Text> i = values.iterator();
@@ -438,7 +439,7 @@ public class HubStats extends Configured implements Tool {
     }
 
     @Override
-    public int run(String[] args) throws Exception {
+    public final int run(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
         Job job = new Job();
         job.setJarByClass(HubStats.class);
         job.setJobName("hubstats");

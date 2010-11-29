@@ -5,7 +5,7 @@ package hubstats;
  *
  * @see Event.Builder
  */
-public class Event {
+public final class Event {
 
     private static final char SEP = '\t';
 
@@ -23,7 +23,7 @@ public class Event {
     /**
      * Builder to ease the creation of new instances of Event.
      */
-    public static class Builder {
+    public static final class Builder {
         private long eventId;
         private EventType eventType;
         private String at;
@@ -151,11 +151,10 @@ public class Event {
             if (builder.branch == null || builder.branch.trim().equals("")) {
                 throw new IllegalArgumentException("Push event must have an associated branch");
             }
-        } else if (builder.eventType == EventType.Create || builder.eventType == EventType.Delete) {
-            if (builder.branch != null && builder.tag != null) {
-                throw new IllegalArgumentException(String.format("Can't %s a branch and a tag in the same event",
-                        builder.eventType.toString().toLowerCase()));
-            }
+        } else if ((builder.eventType == EventType.Create || builder.eventType == EventType.Delete) &&
+                (builder.branch != null && builder.tag != null)) {
+            throw new IllegalArgumentException(String.format("Can't %s a branch and a tag in the same event",
+                    builder.eventType.toString().toLowerCase()));
         }
 
         if (builder.alternateId == 0L && builder.eventType.requiresId()) {
